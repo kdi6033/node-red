@@ -1,0 +1,11 @@
+{
+  "name": "firetest",
+  "description": "firebase test",
+  "version": "0.0.1",
+  "license": "ISC",
+  "author": "Dongil Kim",
+  "dependencies": {
+    "firebase-admin": "^5.13.1",
+    "firebase-functions": "^2.0.2"
+  }
+}
