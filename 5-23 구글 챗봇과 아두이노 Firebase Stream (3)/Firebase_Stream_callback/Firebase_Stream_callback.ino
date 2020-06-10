@@ -5,7 +5,7 @@
 #define FIREBASE_HOST "***.firebaseio.com" //Without http:// or https:// schemes
 #define FIREBASE_AUTH "***"
 #define WIFI_SSID "i2r"
-#define WIFI_PASSWORD "00000000"
+#define WIFI_PASSWORD ""
 
 //Define FirebaseESP8266 data object
 FirebaseData firebaseData1;
@@ -19,6 +19,7 @@ uint16_t count = 0;
 
 void printResult(FirebaseData &data);
 void printResult(StreamData &data);
+void outResult(StreamData &data);
 
 void streamCallback(StreamData data)
 {
@@ -31,9 +32,7 @@ void streamCallback(StreamData data)
   Serial.print("VALUE: ");
   printResult(data);
   Serial.println();
-  if(data.dataPath()=="/on") 
-    digitalWrite(D4, data.intData());
-    //Serial.println(data.intData());
+  outResult(data);
 }
 
 void streamTimeoutCallback(bool timeout)
@@ -259,4 +258,26 @@ void printResult(StreamData &data)
         Serial.println(jsonData->stringValue);
     }
   }
+}
+
+void outResult(StreamData &data)
+{
+  int onValue=1;
+  if (data.dataType() == "int")
+    onValue=data.intData();
+  else if (data.dataType() == "json")
+  {
+    FirebaseJson *json = data.jsonObjectPtr();
+    String jsonStr;
+    json->toString(jsonStr, true);
+
+    FirebaseJsonData jsonObj;
+    json->get(jsonObj,"on");
+    onValue=jsonObj.intValue;
+  }
+
+  if(onValue==1)
+    digitalWrite(D4,0);
+  else
+    digitalWrite(D4,1);
 }
