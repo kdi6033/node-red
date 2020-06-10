@@ -2,8 +2,8 @@
 #include "FirebaseESP8266.h"
 #include <ESP8266WiFi.h>
 
-#define FIREBASE_HOST "myhome-mbbiqf.firebaseio.com" //Without http:// or https:// schemes
-#define FIREBASE_AUTH "eDoY1a7INZwpxukbfCk72QyaJ6kYE6dZlmF2p2yl"
+#define FIREBASE_HOST "***.firebaseio.com" //Without http:// or https:// schemes
+#define FIREBASE_AUTH "***"
 #define WIFI_SSID "i2r"
 #define WIFI_PASSWORD "00000000"
 
