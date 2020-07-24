@@ -1,0 +1,79 @@
+{
+  "richContent": [
+    [
+      {
+        "accessibilityText": "MBD Image",
+        "rawUrl": "http://117.16.177.40/image/주택평면도.png",
+        "type": "image"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "title": "안방전등 ON",
+        "event": {
+          "name": "SampleFour",
+          "parameters": {
+            "on": 1,
+            "name": "안방"
+          }
+        },
+        "type": "list",
+        "languageCode": "ko"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "languageCode": "ko",
+        "type": "list",
+        "title": "안방전등 OFF",
+        "event": {
+          "parameters": {
+            "on": 0,
+            "name": "안방"
+          },
+          "name": "SampleFour"
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "title": "주방전등 ON",
+        "type": "list",
+        "languageCode": "ko",
+        "event": {
+          "parameters": {
+            "on": 1,
+            "name": "주방"
+          },
+          "name": "SampleFour"
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "list",
+        "title": "주방전등 OFF",
+        "languageCode": "ko",
+        "event": {
+          "parameters": {
+            "on": 0,
+            "name": "주방"
+          },
+          "name": "SampleFour"
+        }
+      },
+      {
+        "type": "chips",
+        "options": [
+          {
+            "text": "처음으로"
+          }
+        ]
+      }
+    ]
+  ]
+}
