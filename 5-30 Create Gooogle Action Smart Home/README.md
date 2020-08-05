@@ -8,7 +8,7 @@
 6. Develop->Actions 에서 Fullfilment URL을 입력한다. 
     https://us-central1-<project-id>.cloudfunctions.net/smarthome
 7. Develop->Account linking 에서 다음과 같이 입력한다.
-    Client ID               : ABC123   
+    Client ID               : ABC123
     Client secret           : DEF456
     Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth  
     Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken   
