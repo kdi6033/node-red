@@ -11,8 +11,8 @@
 7. __Develop > Account linking__ 에서 다음과 같이 입력한다.     
 Client ID               : ABC123    
 Client secret           : DEF456    
-    Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth      
-    Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken      
+    Authorization URL       : https://us-central1-\<project-id\>.cloudfunctions.net/fakeauth      
+    Token URL               : https://us-central1-\<project-id\>.cloudfunctions.net/faketoken      
 8. [Google 클라우드 플랫폼](https://console.cloud.google.com/)으로 이동한다.
 9. 상단의 메뉴 "__SmartHomeProject for Codelab__"에서 해당 프로젝트를 선택한다.
 10. HomeGraph API 설치 : 햄버거 아니콘을 선택해 "__API 및 서비스 > 대시보드 > API 및 서비스 사용 설정__"을 선택하고 검색창에 "Home"을 입력하여 "HomeGraph API"를 선택해서 설치한다.      
