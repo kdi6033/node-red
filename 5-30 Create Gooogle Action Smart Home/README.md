@@ -7,7 +7,7 @@
 4. 작업 콘솔의 개요 화면에서 스마트 홈을 선택하십시오.
 5. Actions Console의 __Develop > Invocation__ 에서 언어는 Korean을 선택한 후에 Display name을 입력한다. 
 6. __Develop > Actions__ 에서 Fullfilment URL을 입력한다. 
-    https://us-central1-<project-id>.cloudfunctions.net/smarthome
+    https://us-central1-\<project-id\>.cloudfunctions.net/smarthome
 7. __Develop > Account linking__ 에서 다음과 같이 입력한다.     
 Client ID               : ABC123    
 Client secret           : DEF456    
