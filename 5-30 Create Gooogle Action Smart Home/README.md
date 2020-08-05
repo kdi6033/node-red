@@ -7,8 +7,8 @@
 5. Actions Console의 Develop->Invocation 에서 언어는 Korean을 선택한 후에 Display name을 입력한다. 
 6. Develop->Actions 에서 Fullfilment URL을 입력한다. 
     https://us-central1-<project-id>.cloudfunctions.net/smarthome
-7. Develop->Account linking 에서 다음과 같이 입력한다.
->   > Client ID               : ABC123
+7. Develop->Account linking 에서 다음과 같이 입력한다.    
+    Client ID               : ABC123    
 Client secret           : DEF456
     Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth  
     Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken   
