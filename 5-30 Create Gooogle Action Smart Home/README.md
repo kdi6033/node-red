@@ -5,7 +5,13 @@
 3. Smart Home App 를 선택하십시오.
 4. 작업 콘솔의 개요 화면에서 스마트 홈을 선택하십시오.
 5. Actions Console의 Develop->Invocation 에서 언어는 Korean을 선택한 후에 Display name을 입력한다. 
-
+6. Develop->Actions 에서 Fullfilment URL을 입력한다. 
+    https://us-central1-<project-id>.cloudfunctions.net/smarthome
+7. Develop->Account linking 에서 다음과 같이 입력한다.
+    Client ID               : ABC123   
+    Client secret           : DEF456
+    Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth  
+    Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken   
 
 
 10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.
