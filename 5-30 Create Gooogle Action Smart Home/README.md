@@ -4,7 +4,9 @@
 2. 새 프로젝트를 클릭하고 프로젝트 이름을 입력 한 후 프로젝트 생성을 클릭하십시오.
 3. Smart Home App 를 선택하십시오.
 4. 작업 콘솔의 개요 화면에서 스마트 홈을 선택하십시오.
-5. Actions Console의 Develop / Invocation 에서 언어는 Korean을 선택한 후에 Display name을 입력한다. 
+5. Actions Console의 Develop->Invocation 에서 언어는 Korean을 선택한 후에 Display name을 입력한다. 
+
+
 
 10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.
 firebase CLI를 설치하려면 터미널에서 다음 npm 명령을 실행하십시오.
