@@ -9,9 +9,9 @@
     https://us-central1-<project-id>.cloudfunctions.net/smarthome
 7. Develop->Account linking 에서 다음과 같이 입력한다.     
 Client ID               : ABC123    
-Client secret           : DEF456
-    Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth  
-    Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken   
+Client secret           : DEF456    
+    Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth      
+    Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken      
 
 
 10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.
