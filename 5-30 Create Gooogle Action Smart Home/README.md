@@ -24,7 +24,7 @@ Client secret           : DEF456
 2. 다음 디렉토리로 이동 google-actions-smarthome-master\smarthome-control\functions 
 3. console창에서 다음을 순서대로 실행한다.      
 firebase login      
-firebase use \\<project-id>       
+firebase use \\<project-id\\>       
 npm install     
 firebase deploy
 4. 다음 URL로 접속한다.     
