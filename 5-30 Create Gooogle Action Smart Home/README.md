@@ -30,3 +30,6 @@ firebase deploy
 4. 다음 URL로 접속한다.     
 https://us-central1-\<project-id\>.cloudfunctions.net/smarthome
 5. Google Home을 시작한다.
+
+
+Google Smart Home 문서 : 기기들 상세 프로그램을 하려면 참조하세요 https://developers.google.cn/assistant/smarthome/overview
