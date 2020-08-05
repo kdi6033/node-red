@@ -33,3 +33,5 @@ https://us-central1-\<project-id\>.cloudfunctions.net/smarthome
 
 
 Google Smart Home 문서 : 기기들 상세 프로그램을 하려면 참조하세요 https://developers.google.cn/assistant/smarthome/overview
+
+참조유튜브 : https://www.youtube.com/watch?v=e1C5WIfZ89s
