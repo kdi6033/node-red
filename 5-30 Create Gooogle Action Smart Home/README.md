@@ -1,4 +1,4 @@
-#스마트홈 (Google Actio Smart Home) 만들기
+# 스마트홈 (Google Actio Smart Home) 만들기
 
 1. Actions on Google Console로 이동합니다.
 2. 새 프로젝트를 클릭하고 프로젝트 이름을 입력 한 후 프로젝트 생성을 클릭하십시오.
