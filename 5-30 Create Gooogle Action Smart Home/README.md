@@ -19,6 +19,7 @@ Client secret           : DEF456
 <u>API</u> 및 서비스 HomeGraph API > 사용자 인증 정보 > 사용자 인증 정보 만들기 > 서비스 계정 > 서비스 계정 세부정보  에 tt
 11. Servi
 
+<u>API</u>
 
 
 
