@@ -16,7 +16,7 @@ Client secret           : DEF456
 8. [Google 클라우드 플랫폼](https://console.cloud.google.com/)으로 이동한다.
 9. 상단의 메뉴 "SmartHomeProject for Codelab"에서 해당 프로젝트를 선택한다.
 10. HomeGraph API 설치 : 햄버거 아니콘을 선택해 "API 및 서비스 > 대시보드 > API 및 서비스 사용 설정"을 선택하고 검색창에 "Home"을 입력하여 "HomeGraph API"를 선택해서 설치한다.      
-<u>API</u> 및 서비스 HomeGraph API > 사용자 인증 정보 > 사용자 인증 정보 만들기 > 서비스 계정 > 서비스 계정 세부정보  에 
+<u>API</u> 및 서비스 HomeGraph API > 사용자 인증 정보 > 사용자 인증 정보 만들기 > 서비스 계정 > 서비스 계정 세부정보  에 tt
 11. Servi
 
 
