@@ -1,6 +1,7 @@
 ## 스마트홈 (Google Actio Smart Home) 만들기
 
-1. Actions on Google Console로 이동합니다.
+1. [Actions on Google Console](https://console.actions.google.com/ "Action Google")
+로 이동합니다.
 2. 새 프로젝트를 클릭하고 프로젝트 이름을 입력 한 후 프로젝트 생성을 클릭하십시오.
 3. Smart Home App 를 선택하십시오.
 4. 작업 콘솔의 개요 화면에서 스마트 홈을 선택하십시오.
@@ -13,7 +14,6 @@ Client secret           : DEF456
     Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth      
     Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken      
 
-[taewan.kim](http://taewan.kim "김태완 블러그")
 
 10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.
 firebase CLI를 설치하려면 터미널에서 다음 npm 명령을 실행하십시오.
