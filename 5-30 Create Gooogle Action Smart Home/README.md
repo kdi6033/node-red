@@ -13,9 +13,12 @@ Client ID               : ABC123
 Client secret           : DEF456    
     Authorization URL       : https://us-central1-<project-id>.cloudfunctions.net/fakeauth      
     Token URL               : https://us-central1-<project-id>.cloudfunctions.net/faketoken      
+8. [Google 클라우드 플랫폼](https://console.cloud.google.com/)으로 이동한다.
+9. 상단의 메뉴 "SmartHomeProject for Codelab"에서 해당 프로젝트를 선택한다.
+10. HomeGraph API 설치 : 햄버거 아니콘을 선택해 "API 및 서비스 > 대시보드 > API 및 서비스 사용 설정"을 선택하고 검색창에 "Home"을 입력하여 "HomeGraph API"를 선택해서 설치한다.
 
+10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.     
 
-10. https://nodejs.org/en/download/에서 Node.js를 다운로드하여 설치하십시오.
 firebase CLI를 설치하려면 터미널에서 다음 npm 명령을 실행하십시오.
 sudo npm install -g firebase-tools
 CLI가 올바르게 설치되었는지 확인하려면 다음을 실행하십시오.
