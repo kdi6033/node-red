@@ -1,5 +1,7 @@
 
-<img src="http://c.doowon.ac.kr/image/i2r_small.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="http://c.doowon.ac.kr/image/i2r_small.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
+Google Assistant Device Types & Taits : https://developers.google.cn/assistant/smarthome/guides/blinds#response-nodejs     
+이 유튜브 사이트 참조 : https://codelabs.developers.google.com/codelabs/smarthome-washer/#0     
 
 ## 1. Action Google과 Google Cloud 설정
 https://youtu.be/hTZNtgYlgiQ 에서 설명한 project를 사용하니 사이트 참조하세요.
