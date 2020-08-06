@@ -1,5 +1,5 @@
 
-<img src="http://c.doowon.ac.kr/image/i2r_small.png" width="50%" height="50%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
+<img src="http://c.doowon.ac.kr/image/i2r_small.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
 
 ## 4. 세탁기 만들기
