@@ -1,6 +1,8 @@
 
 <img src="http://c.doowon.ac.kr/image/i2r_small.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
 
+## 1. Action Google과 Google Cloud 설정
+https://youtu.be/hTZNtgYlgiQ 에서 설명한 project를 사용하니 사이트 참조하세요.
 
 ## 4. 세탁기 만들기
 작업을 구성 했으므로 장치를 추가하고 데이터를 보낼 수 있습니다. 클라우드 서비스는 다음 의도를 처리해야합니다.
@@ -54,9 +56,9 @@ app.onSync((body) => {
 
 Firebase에 배포
 Firebase CLI를 사용하여 업데이트 된 클라우드 이행을 배포하십시오.
-
+```
 firebase deploy —only functions
-
+```
 Google Assistant에 연결
 스마트 홈 액션을 테스트하려면 프로젝트를 Google 계정과 연결해야합니다. 이를 통해 동일한 계정으로 로그인 한 Google Assistant Surface 및 Google Home 앱을 통해 테스트 할 수 있습니다.
 
@@ -69,9 +71,7 @@ Google 어시스턴트> 설정> 홈 컨트롤 (어시스턴트 아래)로 이동
 해당 항목을 선택하십시오. 그러면 Google 어시스턴트가 서비스를 인증하고 SYNC 요청을 보내 서비스가 사용자에게 기기 목록을 제공하도록 요청합니다.
 Google Home 앱을 열고 세탁기가 보이는지 확인합니다.
 
-
-
-##5. 명령 및 쿼리 처리
+## 5. 명령 및 쿼리 처리
 클라우드 서비스가 세탁기 장치를 Google에 올바르게보고하므로 장치 상태를 요청하고 명령을 보내는 기능을 추가해야합니다.
 
 QUERY 인 텐트 처리
