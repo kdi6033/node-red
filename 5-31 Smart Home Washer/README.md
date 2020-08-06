@@ -1,6 +1,6 @@
 
 <img src="http://c.doowon.ac.kr/image/i2r_small.png" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-![Alt text](/i2r_small.png)
+![Alt text](https://github.com/kdi6033/node-red/tree/master/5-31%20Smart%20Home%20Washer/i2r_small.png)
 
 ## 4. 세탁기 만들기
 작업을 구성 했으므로 장치를 추가하고 데이터를 보낼 수 있습니다. 클라우드 서비스는 다음 의도를 처리해야합니다.
