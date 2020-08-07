@@ -4,7 +4,7 @@ Codelab에 대한 작업 프로젝트를 만들려면 다음 단계를 따르세
 1. 작업 콘솔을 엽니 다.
 2. 새 프로젝트를 클릭하십시오.
 3. actions-codelab과 같은 프로젝트 이름을 입력합니다. (이름은 내부 참조 용입니다. 나중에 프로젝트의 외부 이름을 설정할 수 있습니다.)
-<img src="http://i2r.link/image/git/5-32 00.png" width="100%" height="100%" title="5-32" alt="5-32"></img><br/>
+<img src="http://i2r.link/image/git/5-32 00.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>
 ## 기본 호출 설정
 사용자가 작업을 호출 할 때 작업이 사용자에게 다시 보내는 프롬프트를 수정하려면 다음 단계를 따르세요.
 
