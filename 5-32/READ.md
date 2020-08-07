@@ -1,3 +1,5 @@
+다음 문서를 참조했습니다. : https://codelabs.developers.google.com/codelabs/actions-builder-1/index.html?index=..%2F..index#0
+
 ## Actions 프로젝트 만들기
 Codelab에 대한 작업 프로젝트를 만들려면 다음 단계를 따르세요.
 
