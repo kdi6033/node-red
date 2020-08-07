@@ -2,13 +2,15 @@
 Codelab에 대한 작업 프로젝트를 만들려면 다음 단계를 따르세요.
 
 1. 작업 콘솔을 엽니 다.
-2. **New project**를 클릭하십시오.
+2. **Create project**를 클릭하십시오.
 3. actions-codelab과 같은 프로젝트 이름을 입력합니다. (이름은 내부 참조 용입니다. 나중에 프로젝트의 외부 이름을 설정할 수 있습니다.)
 <img src="http://i2r.link/image/git/5-32 00.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>     
 
-4. 프로젝트 생성을 클릭하십시오.
-5. 어떤 종류의 액션을 구축 하시겠습니까? 화면에서 사용자 지정 카드를 선택합니다. 다음을 클릭하십시오.
-6. 빈 프로젝트 카드를 선택합니다. 그런 다음 빌드 시작을 클릭합니다.
+4. **New project**을 클릭하십시오.
+5. **What kind of Action do you want to build?** 화면에서 **Custom** 카드를 선택합니다.  **Next**를 클릭하십시오.
+<img src="http://i2r.link/image/git/5-32 01.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>
+6. **Blank project** 카드를 선택합니다. 그런 다음 **Start building**을 클릭합니다.
+<img src="http://i2r.link/image/git/5-32 02.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>
 
 ## 기본 호출 설정
 사용자가 작업을 호출 할 때 작업이 사용자에게 다시 보내는 프롬프트를 수정하려면 다음 단계를 따르세요.
