@@ -8,9 +8,9 @@ Codelab에 대한 작업 프로젝트를 만들려면 다음 단계를 따르세
 
 4. **New project**을 클릭하십시오.
 5. **What kind of Action do you want to build?** 화면에서 **Custom** 카드를 선택합니다.  **Next**를 클릭하십시오.
-<img src="http://i2r.link/image/git/5-32 01.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>
+<img src="http://i2r.link/image/git/5-32 01.png" width="70%" height="70%" title="5-32" alt="5-32"></img><br/>
 6. **Blank project** 카드를 선택합니다. 그런 다음 **Start building**을 클릭합니다.
-<img src="http://i2r.link/image/git/5-32 02.png" width="50%" height="50%" title="5-32" alt="5-32"></img><br/>
+<img src="http://i2r.link/image/git/5-32 02.png" width="30%" height="30%" title="5-32" alt="5-32"></img><br/>
 
 ## 기본 호출 설정
 사용자가 작업을 호출 할 때 작업이 사용자에게 다시 보내는 프롬프트를 수정하려면 다음 단계를 따르세요.
