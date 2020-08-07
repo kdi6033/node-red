@@ -15,9 +15,9 @@ Codelab에 대한 작업 프로젝트를 만들려면 다음 단계를 따르세
 <img src="http://i2r.link/image/git/5-32 03.png" width="60%" height="60%" title="5-32" alt="5-32"></img><br/>
 
 ## 기본 호출 설정
-사용자가 작업을 호출 할 때 작업이 사용자에게 다시 보내는 프롬프트를 수정하려면 다음 단계를 따르세요.
 
-1. 왼쪽 탐색에서 기본 호출을 클릭하십시오.
+1. 왼쪽 탐색에서 **Main invocation**을 클릭하십시오.
+<img src="http://i2r.link/image/git/5-32 04.png" width="100%" height="100%" title="5-32" alt="5-32"></img><br/>
 2. 오른쪽의 코드 편집기에서 음성 필드의 텍스트 Start building your .....)를 다음 환영 메시지로 바꿉니다. : 안녕하세요 로봇예제1을 시작합니다.
 3. [save]를 클릭하십시오. 
 
