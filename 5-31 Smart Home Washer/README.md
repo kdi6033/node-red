@@ -1,5 +1,5 @@
 
-<img src="https://github.com/kdi6033/node-red/i2r_small.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
+<img src="http://i2r.link/image/git/i2r.png" width="10%" height="10%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>     
 Google Assistant Device Types & Taits : https://developers.google.cn/assistant/smarthome/guides/blinds#response-nodejs     
 이 유튜브 사이트 참조 : https://codelabs.developers.google.com/codelabs/smarthome-washer/#0     
 
