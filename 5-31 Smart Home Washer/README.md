@@ -209,4 +209,5 @@ const updateDevice = async (execution, deviceId) => {
       .then(() => state);
 };
 ```
+
 6. Test your Action
