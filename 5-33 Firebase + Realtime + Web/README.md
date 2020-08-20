@@ -24,7 +24,7 @@ index.html
 
         <script>
             var firebaseConfig = {
-                apiKey: "AIzaSyBER47eiJoAJfhaP9CdjPuqFkCfPp30UoE",
+                apiKey: "AIzaSyBER47eiJoAJfhaP9CdjPuqFkCfPp30",
                 authDomain: "webtest-38a08.firebaseapp.com",
                 databaseURL: "https://webtest-38a08.firebaseio.com",
                 projectId: "webtest-38a08",
