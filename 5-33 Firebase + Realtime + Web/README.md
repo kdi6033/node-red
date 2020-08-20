@@ -2,11 +2,11 @@
 ### Firebase + Realtime + Web 
 
 
-웹 닉네임 입력 후 앱등록을 누른다.
-<img src="https://i2r.link/image/git/5-33-01.png" width="50%" height="50%" title="5-33-01" alt="5-33-01"></img><br/>
+웹 닉네임 입력 후 앱등록을 누른다.<br/>
+<img src="https://i2r.link/image/git/5-33-01.png" width="50%"  height="50%" title="5-33-01" alt="5-33-01" ></img><br/>
 
-firebaseConfig를 복사해서 index.html에 붙여 넣는다.
-<img src="https://i2r.link/image/git/5-33-02.png" width="50%" height="50%" title="5-33-02" alt="5-33-02"></img><br/>
+firebaseConfig를 복사해서 index.html에 붙여 넣는다.<br/>
+<img src="https://i2r.link/image/git/5-33-02.png" width="50%" height="50%" title="5-33-02" alt="5-33-02" ></img><br/>
 
 index.html
 ```
