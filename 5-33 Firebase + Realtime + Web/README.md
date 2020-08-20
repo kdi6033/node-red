@@ -1,8 +1,8 @@
 ## 파이어베이스 실시간으로 웹페이지 연동하기 
 ### Firebase + Realtime + Web 
 
-웹 닉네임 입력 후 앱등록을 누른다.
 
+웹 닉네임 입력 후 앱등록을 누른다.
 <img src="https://i2r.link/image/git/5-33-01.png" width="50%" height="50%" title="5-33-01" alt="5-33-01"></img><br/>
 
 firebaseConfig를 복사해서 index.html에 붙여 넣는다.
