@@ -3,7 +3,7 @@
 
 
 웹 닉네임 입력 후 앱등록을 누른다.<br/>
-<img align="left" src="https://i2r.link/image/git/5-33-01.png" width="30%"  height="30%" title="5-33-01" alt="5-33-01" ></img><br/><br/><br/><br/><br/><br/>
+<img align="left" src="https://i2r.link/image/git/5-33-01.png" width="40%"  height="40%" title="5-33-01" alt="5-33-01" ></img><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 firebaseConfig를 복사해서 index.html에 붙여 넣는다.<br/>
 <img src="https://i2r.link/image/git/5-33-02.png" width="50%" height="50%" title="5-33-02" alt="5-33-02" ></img><br/>
 
