@@ -16,7 +16,8 @@ index.html
         <script src="https://www.gstatic.com/firebasejs/7.2/firebase.js"></script>
     </head>
     <body>
-        테스트1
+        파이어베이스 실시간으로 웹페이지 연동하기 </br>
+        Firebase + Realtime + Web 
         <p id="demo">A Paragraph.</p>
         <pre id="object"></pre>
         <button type="button" onclick="myFunction()">데이터 쓰기</button>
