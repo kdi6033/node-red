@@ -1,0 +1,73 @@
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://www.gstatic.com/firebasejs/7.2/firebase.js"></script>
+        <style>
+            .button {
+                border: none;
+                color: white;
+                padding: 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            .button-on {border-radius: 100%; background-color: #4CAF50;}
+            .button-off {border-radius: 100%;background-color: #707070;}
+        </style>
+    </head>
+    <body>
+        파이어베이스 실시간으로 웹과 ESP8266 연동하기 </br>
+        Firebase + Realtime + Web + ESP8266(D1 mini)
+        <p id="demo">A Paragraph.</p>
+        <pre id="object"></pre>
+
+        <script>
+            <!--WebTest02-->
+            var firebaseConfig = {
+                apiKey: "AIzaSyBleErFQNhVbw9du09sG7ud7xZQL_hVemY",
+                authDomain: "webtest02-b4a3b.firebaseapp.com",
+                databaseURL: "https://webtest02-b4a3b.firebaseio.com",
+                projectId: "webtest02-b4a3b",
+                storageBucket: "webtest02-b4a3b.appspot.com",
+                messagingSenderId: "389618479649",
+                appId: "1:389618479649:web:6931d12b694485ef1e2960",
+                measurementId: "G-MYN5L29R6W"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+        </script>
+         <script>
+            // firebase에서 읽기
+            var preObject = document.getElementById("object");
+            var dbRef = firebase.database().ref().child("object");
+            var power;
+            dbRef.on('value',snap => {
+                power=snap.val();
+                preObject.innerText=JSON.stringify(power);
+                //alert(JSON.stringify(power.name)+"의 상태 "+JSON.stringify(power.on));
+
+                var demo = document.getElementById("demo");
+                if(power.on == 1)
+                    demo.innerHTML="<button id=\"button01\" class=\"button button-on\" onclick=\"myFunction()\">";
+                else
+                    demo.innerHTML="<button id=\"button01\" class=\"button button-off\" onclick=\"myFunction()\">";
+            });
+
+            function myFunction() {
+                var button01 = document.getElementById("button01");
+                if(power.on==1)
+                    power.on=0;
+                else
+                    power.on=1;
+                //firebase에 쓰기
+                var dbRefObject = firebase.database().ref();
+                dbRefObject.child("object/on").set(power.on);
+                //alert("쓰기 완료");
+            }
+        </script>
+    </body>
+</html>
