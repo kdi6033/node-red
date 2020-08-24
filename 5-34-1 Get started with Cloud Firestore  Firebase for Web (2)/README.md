@@ -20,8 +20,6 @@ index.html
       <button id="saveButton">저장</button>
       <!--<button id="loadButton">현재상태읽기</button> -->
       <script>"./app.js"</script>
-        <script src="app.js"></script>
-
     </body>
 </html>
 ```
