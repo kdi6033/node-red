@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+
+        <h1>크라우드 까페</h1>
+
+        <div class="content">
+
+            <form id="add-cafe-form">
+                <input type="text" name="name" placeholder="까페 이름">
+                <input type="text" name="city" placeholder="까페 도시">
+                <button>까페추가</button>
+            </form>
+
+            <ul id="cafe-list"></ul>
+
+        </div>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyCek0u4PRS4bAuMPLIvCz3oq0YL4zeJO7Q",
+                authDomain: "webtest02-727d2.firebaseapp.com",
+                databaseURL: "https://webtest02-727d2.firebaseio.com",
+                projectId: "webtest02-727d2",
+                storageBucket: "webtest02-727d2.appspot.com",
+                messagingSenderId: "920162336844",
+                appId: "1:920162336844:web:3ccbaed05fa2f7e845f4e9",
+                measurementId: "G-ELH2QQ922H"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            //db.settings({ timestampsInSnapshots: true }); 
+        </script>
+
+        <script src="app.js"></script>
+    </body>
+</html>
