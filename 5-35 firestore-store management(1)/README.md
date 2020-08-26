@@ -4,6 +4,7 @@
 이 프로그램을 따라하면 파이어스토어의 데이터를 관리하는 기본 명령을 학습 할 수 있습니다.
 본 과정은 아래 유튜브를 참조해 설명하오니 여기서 부족한 설명은 아래 유튜브를 참조 하세요. 
 참조유튜브 : https://www.youtube.com/watch?v=4d-gIPGzmK4&list=PL4cUxeGkcC9itfjle0ji1xOZ2cjRGY_WB 
+구글 파이어스토어 메뉴얼 : https://firebase.google.com/docs/firestore
 
 1. 프로그램 구조와 파이어스토어 연결
 2. 데이터 읽기와 웹에 기록하기
