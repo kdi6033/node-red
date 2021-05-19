@@ -27,6 +27,8 @@ firebase login
 firebase use \<project-id\>       
 npm install     
 firebase deploy
+*** npm과 firebse가 실행되지 않으면 이를 설치하세요 https://www.youtube.com/watch?v=uBZ78C--T6U
+
 4. 다음 URL로 접속한다.     
 https://us-central1-\<project-id\>.cloudfunctions.net/smarthome
 5. Google Home을 시작한다.
