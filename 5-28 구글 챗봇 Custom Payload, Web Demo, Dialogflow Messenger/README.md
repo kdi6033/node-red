@@ -9,6 +9,7 @@ Intents 이름: 구글챗봇의 Custom Payload를 이용해 리치 설명, 정�
 1. Description type :  
 Intents 이름: richDes   
 Training phrases : 리치설명
+eee
 ![richDes](https://user-images.githubusercontent.com/37902752/132096660-0e6092a2-3528-4383-8387-741b84e46284.png){: width="100" height="100"}
                       
 ```
