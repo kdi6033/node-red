@@ -11,6 +11,7 @@ Intents 이름: richDes
 Training phrases : 리치설명
 eee
 ![richDes](https://user-images.githubusercontent.com/37902752/132096660-0e6092a2-3528-4383-8387-741b84e46284.png){: width="50%" height="50%"}
+<img src="https://user-images.githubusercontent.com/37902752/132096660-0e6092a2-3528-4383-8387-741b84e46284.png  width="200" height="200"/>
                       
 ```
 {
