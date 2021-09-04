@@ -1,7 +1,142 @@
-# PE-300  http://sensecube.com
+# 구글 챗봇 Custom Payload, Web Demo, Dialogflow Messenger
 ## EC PH 온도 측정
----
 
+Intents 이름: 구글챗봇의 Custom Payload를 이용해 리치 설명, 정보, 그림, 버튼, 선택, 리스트 등을 처리하는 프로그램을 설명한다.
+
+다음 사이트를 참조해서 만들었습니다.
+참조사이트 : https://miningbusinessdata.com/dialogflow-messenger-tutorial/
+
+
+1. Description type :  
+Intents 이름: richDes   
+Training phrases : 리치설명
+```
+{
+  "richContent": [
+    [
+      {
+        "title": "전등 리스트",
+        "type": "description",
+        "text": [
+          "안방전등",
+          "거실전등"
+        ]
+      }
+    ]
+  ]
+}
+```
+
+2. Info type
+Intents 이름:  richInfo  
+Training phrases : 리치정보
+{
+  "richContent": [
+    [
+      {
+        "type": "info",
+        "title": "제목",
+        "subtitle": "부제목",
+        "image": {
+          "src": {
+            "rawUrl": "http://117.16.177.40/image/i2r_small.png"
+          }
+        },
+        "actionLink":"https://i2r.link"
+      }
+    ]
+  ]
+}
+
+3. Image type
+Intents 이름:  richImage 
+Training phrases : 리치그림
+{
+  "richContent": [
+    [
+      {
+        "type": "image",
+        "accessibilityText":"MBD Image",
+        "rawUrl": "http://117.16.177.40/image/sunset.jpg"
+      }
+    ]
+  ]
+}
+
+4. Button type
+Intents 이름:  richButton 
+Training phrases : 리치버튼
+{
+  "richContent": [
+    [
+      {
+        "link":"http://i2r.link",
+        "text": "Go to Idea to Real",
+        "icon": {
+          "type":"link",
+          "color":"#FF9800"
+        },
+        "type": "button"
+      }
+    ]
+  ]
+}
+
+5. Suggestion Chips
+Intents 이름:  richSuggestion  
+Training phrases : 리치선택
+{
+  "richContent": [
+    [
+      {
+        "type":"chips",
+        "options": [
+          {
+            "text":"yes"
+          },
+          {
+            "text":"no"
+          }
+        ]
+      }
+    ]
+  ]
+}
+
+6. List Response Type
+Intents 이름:  richList 
+Training phrases : 리치리스트
+{
+  "richContent": [
+    [
+      {
+        "title":"List item 1 title",
+        "subtitle":"List Item 1 subtitle",
+        "type":"list",
+        "event": {
+          "parameters":{},
+          "name":"WELCOME",
+          "languageCode":"en"
+        }
+      },
+      {
+        "type":"divider"
+      },
+      {
+        "title":"List item 2 title",
+        "subtitle":"List Item 2 subtitle",
+        "type":"list",
+        "event": {
+          "parameters":{},
+          "name":"PARALLEL",
+          "languageCode":"en"
+        }
+      }
+    ]
+  ]
+}
+
+김동일교수 유튜브목차 : http://i2r.link
 
 
 ![11-2-1 sensecube pe-300 + ESP8266 WiFi](https://user-images.githubusercontent.com/37902752/123378609-f3c64e80-d5c7-11eb-9458-c724c77a70e8.jpg)
