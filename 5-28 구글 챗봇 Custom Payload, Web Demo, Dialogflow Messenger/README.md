@@ -1,5 +1,4 @@
 # 구글 챗봇 Custom Payload, Web Demo, Dialogflow Messenger
-## EC PH 온도 측정
 
 Intents 이름: 구글챗봇의 Custom Payload를 이용해 리치 설명, 정보, 그림, 버튼, 선택, 리스트 등을 처리하는 프로그램을 설명한다.
 
@@ -30,6 +29,7 @@ Training phrases : 리치설명
 2. Info type
 Intents 이름:  richInfo  
 Training phrases : 리치정보
+```
 {
   "richContent": [
     [
@@ -47,10 +47,12 @@ Training phrases : 리치정보
     ]
   ]
 }
+```
 
 3. Image type
 Intents 이름:  richImage 
 Training phrases : 리치그림
+```
 {
   "richContent": [
     [
@@ -62,10 +64,12 @@ Training phrases : 리치그림
     ]
   ]
 }
+```
 
 4. Button type
 Intents 이름:  richButton 
 Training phrases : 리치버튼
+```
 {
   "richContent": [
     [
@@ -81,10 +85,12 @@ Training phrases : 리치버튼
     ]
   ]
 }
+```
 
 5. Suggestion Chips
 Intents 이름:  richSuggestion  
 Training phrases : 리치선택
+```
 {
   "richContent": [
     [
@@ -102,10 +108,12 @@ Training phrases : 리치선택
     ]
   ]
 }
+```
 
 6. List Response Type
 Intents 이름:  richList 
 Training phrases : 리치리스트
+```
 {
   "richContent": [
     [
@@ -135,6 +143,7 @@ Training phrases : 리치리스트
     ]
   ]
 }
+```
 
 김동일교수 유튜브목차 : http://i2r.link
 
