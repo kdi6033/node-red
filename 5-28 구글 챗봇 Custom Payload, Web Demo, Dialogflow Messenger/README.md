@@ -9,6 +9,8 @@ Intents 이름: 구글챗봇의 Custom Payload를 이용해 리치 설명, 정�
 1. Description type :  
 Intents 이름: richDes   
 Training phrases : 리치설명
+![입력](https://user-images.githubusercontent.com/37902752/123378609-f3c64e80-d5c7-11eb-9458-c724c77a70e8.jpg)
+                      
 ```
 {
   "richContent": [
@@ -39,7 +41,7 @@ Training phrases : 리치정보
         "subtitle": "부제목",
         "image": {
           "src": {
-            "rawUrl": "http://117.16.177.40/image/i2r_small.png"
+            "rawUrl": "http://i2r.link/image/i2r_small.png"
           }
         },
         "actionLink":"https://i2r.link"
@@ -59,7 +61,7 @@ Training phrases : 리치그림
       {
         "type": "image",
         "accessibilityText":"MBD Image",
-        "rawUrl": "http://117.16.177.40/image/sunset.jpg"
+        "rawUrl": "http://i2r.link/image/sunset.jpg"
       }
     ]
   ]
@@ -147,7 +149,4 @@ Training phrases : 리치리스트
 
 김동일교수 유튜브목차 : http://i2r.link
 
-
-![11-2-1 sensecube pe-300 + ESP8266 WiFi](https://user-images.githubusercontent.com/37902752/123378609-f3c64e80-d5c7-11eb-9458-c724c77a70e8.jpg)
-                      
 
