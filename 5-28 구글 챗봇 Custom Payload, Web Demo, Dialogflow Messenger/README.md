@@ -6,7 +6,7 @@ Intents 이름: 구글챗봇의 Custom Payload를 이용해 리치 설명, 정�
 참조사이트 : https://miningbusinessdata.com/dialogflow-messenger-tutorial/
 
 
-##1. Description type :  
+## 1. Description type :  
 Intents 이름: richDes   
 Training phrases : 리치설명
 
