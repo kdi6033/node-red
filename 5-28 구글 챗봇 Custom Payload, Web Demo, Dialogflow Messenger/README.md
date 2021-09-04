@@ -61,6 +61,7 @@ Training phrases : 리치정보
 ## 3. Image type
 Intents 이름:  richImage 
 Training phrases : 리치그림
+
 <img src="https://user-images.githubusercontent.com/37902752/132097787-801ef826-d18a-445d-9081-ef982ada9446.png" width="400" height="400" />
 Custom Payload 
 
@@ -81,6 +82,7 @@ Custom Payload
 ## 4. Button type
 Intents 이름:  richButton 
 Training phrases : 리치버튼
+
 <img src="https://user-images.githubusercontent.com/37902752/132097950-6c5542ee-b6f3-48e7-a480-4d95044827a4.png" width="400" height="400" />
 Custom Payload 
 
@@ -105,6 +107,7 @@ Custom Payload
 ## 5. Suggestion Chips
 Intents 이름:  richSuggestion  
 Training phrases : 리치선택
+
 <img src="https://user-images.githubusercontent.com/37902752/132098161-5bbdddfa-c40d-4650-ab83-3f7fdd8a9c47.png" width="400" height="400" />
 Custom Payload 
 
@@ -131,6 +134,7 @@ Custom Payload
 ## 6. List Response Type
 Intents 이름:  richList 
 Training phrases : 리치리스트
+
 <img src="https://user-images.githubusercontent.com/37902752/132098282-bed5abf4-96a8-4ee0-904a-8f842a93896f.png" width="400" height="400" />
 Custom Payload 
 
