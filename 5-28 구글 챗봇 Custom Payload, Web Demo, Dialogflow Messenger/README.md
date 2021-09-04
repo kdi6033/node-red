@@ -130,7 +130,7 @@ Custom Payload
 6. List Response Type
 Intents 이름:  richList 
 Training phrases : 리치리스트
-<img src="https://user-images.githubusercontent.com/37902752/132098161-5bbdddfa-c40d-4650-ab83-3f7fdd8a9c47.png" width="400" height="400" />
+<img src="https://user-images.githubusercontent.com/37902752/132098282-bed5abf4-96a8-4ee0-904a-8f842a93896f.png" width="400" height="400" />
 Custom Payload 
 
 ```
