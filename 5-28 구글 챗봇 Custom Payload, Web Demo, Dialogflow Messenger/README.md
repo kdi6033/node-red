@@ -188,6 +188,7 @@ rich.html 프로그램
 ```
 
 그림 파일은 "/var/www/html/image"에 복사한다.
+<img src="https://github.com/kdi6033/node-red/issues/10#issue-988308403" width="400" height="400" />
 
 김동일교수 유튜브목차 : http://i2r.link
 
