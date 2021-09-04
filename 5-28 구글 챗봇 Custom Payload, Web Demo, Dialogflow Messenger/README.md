@@ -32,7 +32,7 @@ Custom Payload
 2. Info type
 Intents 이름:  richInfo  
 Training phrases : 리치정보
-<img src="https://user-images.githubusercontent.com/37902752/132096660-0e6092a2-3528-4383-8387-741b84e46284.png" width="400" height="400" />
+<img src="![richInformation](https://user-images.githubusercontent.com/37902752/132097458-c18f3640-d504-4945-8845-2a0c2d630f75.png)" width="400" height="400" />
 Custom Payload 
 ```
 {
@@ -57,6 +57,8 @@ Custom Payload
 3. Image type
 Intents 이름:  richImage 
 Training phrases : 리치그림
+<img src="![richInformation](https://user-images.githubusercontent.com/37902752/132097458-c18f3640-d504-4945-8845-2a0c2d630f75.png)" width="400" height="400" />
+Custom Payload 
 ```
 {
   "richContent": [
