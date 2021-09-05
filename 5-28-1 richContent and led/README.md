@@ -1,5 +1,8 @@
 # 구글 챗봇 Custom Payload의 richContent로 아마존 node-red와 연결된 Led 제어 
 다이어로그프로우를 이용해 구글 메신져 챗봇을 만든다.
+
+<img src="https://user-images.githubusercontent.com/37902752/132119090-ac56a17f-cc64-4389-ae65-4f6a6d3eccff.png" width="400" height="400" />
+
 - 다이어로그 처음 시작하는 "Default Welcome Intent" "Training phrases"에 "처음으로"라는 음성인식을 추가하고 아래 프로그램을 추가한다.
 
 Custom Payload
