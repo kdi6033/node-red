@@ -1,8 +1,12 @@
 # 구글 챗봇 Custom Payload의 richContent로 아마존 node-red와 연결된 Led 제어 
-다이어로그프로우에서 Default / Custom Payload /  richContent 를 이용해 구글 메신져 챗봇을 만든다.
-- "54.214.53.183" 주소에는 자신의 아마존 서버 주소를 입력하세요. 
-- "http://117.16.177.40/image/led-on.jpg" 117.16.177.40에는 자신의 아마존 서버 주소를 입력하세요.  그리고 아마존 크라우드에 아파치를 설치한 후 웹페이지가 시작되는  www/html 디렉토리에 "image"라는 디렉토리를 만들고 인터넷으로 "led icon"으로 검색하면 여러 개의 이미지 중 맘에 드는 것으로 "led-on.jpg"  "led-off.jpg"  그림을 저장하세요.
+다이어로그프로우를 이용해 구글 메신져 챗봇을 만든다.
+
+<img src="https://user-images.githubusercontent.com/37902752/132119090-ac56a17f-cc64-4389-ae65-4f6a6d3eccff.png" width="50%" height="50%" />
+
+- 다이어로그 처음 시작하는 "Default Welcome Intent" "Training phrases"에 "처음으로"라는 음성인식을 추가하고 아래 프로그램을 추가한다.
+
 Custom Payload
+
 ```
 Custom Payload
 {
@@ -34,44 +38,53 @@ Custom Payload
     ]
   ]
 }
+```
 
+"richinfo" Intents에 아래 프로그램을 추가한다. 
+- "18.237.189.188" 주소에는 자신의 아마존 서버 주소를 입력하세요. 
+- "http://i2r.link/image/led-on.jpg"에 i2r.link에 자신의 아마존 서버 주소를 입력하세요. 아니면 그대로 놔두면 여기 주소의 그림을 가져옴으로 그대로 사용해도 된다.
+- 아마존 크라우드에 아파치를 설치한 후 웹페이지가 시작되는  www/html 디렉토리에 "image"라는 디렉토리를 만들고 인터넷으로 "led icon"으로 검색하면 여러 개의 이미지 중 맘에 드는 것으로 "led-on.jpg"  "led-off.jpg"  그림을 저장하세요.
 
+Custom Payload
+
+```
 {
   "richContent": [
     [
       {
-        "actionLink": "http://54.214.53.183:1880/led?name=안방&on=1",
+        "actionLink": "http://18.237.189.188:1880/led?name=안방&on=1",
         "title": "안방전등 ON",
         "image": {
           "src": {
-            "rawUrl": "http://117.16.177.40/image/led-on.jpg"
+            "rawUrl": "http://i2r.link/image/led-on.jpg"
           }
         },
         "type": "info"
       },
       {
+        "actionLink": "http://18.237.189.188:1880/led?name=안방&on=0",
+        "title": "안방전등 OFF",
         "type": "info",
-        "actionLink": "http://54.214.53.183:1880/led?name=안방&on=0",
         "image": {
           "src": {
-            "rawUrl": "http://117.16.177.40/image/led-off.jpg"
+            "rawUrl": "http://i2r.link/image/led-off.jpg"
           }
-        },
-        "title": "안방전등 OFF"
+        }
       },
       {
+        "type": "chips",
         "options": [
           {
             "text": "처음으로"
           }
-        ],
-        "type": "chips"
+        ]
       }
     ]
   ]
 }
 ```
 
+다음은 자신의 node-red에 전등 led를 on off 하는 프로그램을 추가한다.
 전등 한개 node red 소스프로그램
 ```
 [
