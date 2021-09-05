@@ -192,6 +192,8 @@ rich.html 프로그램
 </html>
 ```
 
+<img src="https://user-images.githubusercontent.com/37902752/132098924-bc3bc18e-17ce-4ae2-8037-3b923a22d9c2.png" width="400" height="400" />
+
 그림 파일은 "/var/www/html/image"에 복사한다.
 
 <img src="https://user-images.githubusercontent.com/37902752/132098924-bc3bc18e-17ce-4ae2-8037-3b923a22d9c2.png" width="400" height="400" />
