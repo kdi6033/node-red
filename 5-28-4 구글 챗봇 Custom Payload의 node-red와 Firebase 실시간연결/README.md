@@ -1,4 +1,4 @@
-# 구글 챗봇 Custom Payload의 richContent로 아마존 node-red와 연결된 Led 제어 
+# 구글 챗봇 Custom Payload의 node-red와 Firebase 실시간연결
 쳇봇과 DialogFlow에서 입력이 들어와 Firebase에서 값이 변하면 실시간으로 node-red와 연동하여 Led로 표시한다.
 node red 소스 프로그램
 ```
