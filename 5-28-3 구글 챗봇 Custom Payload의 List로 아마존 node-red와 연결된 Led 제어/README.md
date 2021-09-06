@@ -7,9 +7,24 @@
   "richContent": [
     [
       {
-        "type": "image",
+        "rawUrl": "http://i2r.link/image/home.png",
         "accessibilityText": "MBD Image",
-        "rawUrl": "http://i2r.link/image/home.png"
+        "type": "image"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "list",
+        "event": {
+          "name": "SampleFour",
+          "parameters": {
+            "name": "안방",
+            "on": "켜"
+          }
+        },
+        "title": "안방전등 ON",
+        "languageCode": "ko"
       },
       {
         "type": "divider"
@@ -18,13 +33,13 @@
         "event": {
           "name": "SampleFour",
           "parameters": {
-            "on": 1,
-            "name": "안방"
+            "name": "안방",
+            "on": "꺼"
           }
         },
-        "title": "안방전등 ON",
-        "type": "list",
-        "languageCode": "ko"
+        "languageCode": "ko",
+        "title": "안방전등 OFF",
+        "type": "list"
       },
       {
         "type": "divider"
@@ -32,52 +47,37 @@
       {
         "event": {
           "parameters": {
-            "name": "안방",
-            "on": 0
+            "name": "주방",
+            "on": "켜"
           },
           "name": "SampleFour"
         },
-        "title": "안방전등 OFF",
+        "languageCode": "ko",
         "type": "list",
-        "languageCode": "ko"
+        "title": "주방전등 ON"
       },
       {
         "type": "divider"
       },
       {
-        "title": "주방전등 ON",
-        "languageCode": "ko",
-        "type": "list",
         "event": {
           "name": "SampleFour",
           "parameters": {
             "name": "주방",
-            "on": 1
+            "on": "꺼"
           }
-        }
-      },
-      {
-        "type": "divider"
-      },
-      {
-        "type": "list",
+        },
         "languageCode": "ko",
         "title": "주방전등 OFF",
-        "event": {
-          "parameters": {
-            "on": 0,
-            "name": "주방"
-          },
-          "name": "SampleFour"
-        }
+        "type": "list"
       },
       {
+        "type": "chips",
         "options": [
           {
             "text": "처음으로"
           }
-        ],
-        "type": "chips"
+        ]
       }
     ]
   ]
@@ -186,10 +186,17 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     //agent.add(`샘플포`);
     const name = agent.parameters.name;
     const on = agent.parameters.on;
+    var state = 0;
+    
+    if(on=="켜")
+      state=1;
+    else
+      state=0;
+      
     
     return admin.database().ref('data').set({
       name:name,
-      on:on
+      on:state
     });
   }
   // Run the proper function handler based on the matched Dialogflow intent name
