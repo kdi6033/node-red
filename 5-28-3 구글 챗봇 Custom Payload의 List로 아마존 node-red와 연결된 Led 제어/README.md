@@ -85,7 +85,7 @@
 ```
 
 - 위 richList에서 "event"로 "SampleFour"이 설정되어 있어서 야래와 같이 SampleFour의 event를 설정한다.
-<img src = "https://user-images.githubusercontent.com/37902752/132804408-a6a01dc4-148e-4368-94d0-79a1711487aa.png" width="300" height="200">
+<img src = "https://user-images.githubusercontent.com/37902752/132804408-a6a01dc4-148e-4368-94d0-79a1711487aa.png" width="400" height="200">
 
 - 개인 PC에서 Dialog Flow 프로그램을 내려 받아 Deploy 하는 방법은 5.19.3  https://youtu.be/uBZ78C--T6U 을 참조해 주세요. 이 다음부터 설명하겠습니다.
 - Google DialogFlow에서 자동생성되는 package.json 의 버젼이 달라서 링크 에러가 발생 합나다. 아래 프로그램 버젼을 수정한 package.json 을 사용 하세요.
