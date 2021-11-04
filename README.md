@@ -1,7 +1,7 @@
 # node-red
 
 ## 5.6.12 Node-RED WebSocket 노드레드에서 웹소켙 사용하기    
-[유튜브보기](https://youtu.be/BHBhwUUf8OE)   
+[유튜브보기](https://youtu.be/Qob1-N8fe3w)   
 node-red 에서 UI로 html을 사용할 때 node-red와 html 사이에 WebSocket 방식으로 통신을 하여 실시간으로 업데이트 되는 홈페이지 작성법을 설명한다.    
 소스프로그램     
 ```
