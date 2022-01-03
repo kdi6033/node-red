@@ -454,3 +454,449 @@ Node red 의 Scheduler를 이용하여 일주일 단위의 동작 시간을 설�
     }
 ]
 ```
+
+## 5.6.15 Delay와 Trriger 노드 사용번  
+[유튜브보기](https://youtu.be/j45z6Q8Q-No)  
+Delay와 Trriger의 사용법과 Function에서 변수로 처리하는 방법을 설명한다.
+소스프로그램  
+```
+[
+    {
+        "id": "692d2f99b85a5129",
+        "type": "comment",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "info": "node red mongodb trigger time schedule",
+        "x": 200,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "fa319cd3ddea106c",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 120,
+        "wires": [
+            [
+                "0b032a33350a9510"
+            ]
+        ]
+    },
+    {
+        "id": "0b032a33350a9510",
+        "type": "delay",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "10",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 420,
+        "y": 120,
+        "wires": [
+            [
+                "f02474350b63d028"
+            ]
+        ]
+    },
+    {
+        "id": "f02474350b63d028",
+        "type": "function",
+        "z": "94d3083d860723e4",
+        "name": "Format timestamp",
+        "func": "// Create a Date object from the payload\nvar date = new Date(msg.payload);\n// Change the payload to be a formatted Date string\nmsg.payload = date.toString();\n// Return the message so it can be sent on\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 120,
+        "wires": [
+            [
+                "27405f7e33fec6b7"
+            ]
+        ]
+    },
+    {
+        "id": "27405f7e33fec6b7",
+        "type": "debug",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "6600580f0aeb1e8e",
+        "type": "trigger",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "5",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "test",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "b60cfeb5573d1c75"
+            ]
+        ]
+    },
+    {
+        "id": "b60cfeb5573d1c75",
+        "type": "debug",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "045f2f75a6706a8b",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 320,
+        "wires": [
+            [
+                "6600580f0aeb1e8e"
+            ]
+        ]
+    },
+    {
+        "id": "40959ac9af5765ca",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "test",
+        "payloadType": "str",
+        "x": 200,
+        "y": 360,
+        "wires": [
+            [
+                "6600580f0aeb1e8e"
+            ]
+        ]
+    },
+    {
+        "id": "4a2ad8440707ad26",
+        "type": "trigger",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "2",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 540,
+        "y": 460,
+        "wires": [
+            [
+                "3a17722d988a96eb"
+            ]
+        ]
+    },
+    {
+        "id": "4cf28a50102e4183",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 460,
+        "wires": [
+            [
+                "c0bba25c1e18f078"
+            ]
+        ]
+    },
+    {
+        "id": "3a17722d988a96eb",
+        "type": "debug",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "d06febb701c2c5c7",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "delay",
+                "v": "5000",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 520,
+        "wires": [
+            [
+                "4a2ad8440707ad26"
+            ]
+        ]
+    },
+    {
+        "id": "c0bba25c1e18f078",
+        "type": "function",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "func": "msg.delay=5000;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 460,
+        "wires": [
+            [
+                "4a2ad8440707ad26"
+            ]
+        ]
+    },
+    {
+        "id": "44d4875b94478d57",
+        "type": "delay",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "786fddfb86b1d05f"
+            ]
+        ]
+    },
+    {
+        "id": "611ae255aa10ac4d",
+        "type": "inject",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 220,
+        "wires": [
+            [
+                "8b15f81c2474e4e6"
+            ]
+        ]
+    },
+    {
+        "id": "8b15f81c2474e4e6",
+        "type": "function",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "func": "msg.delay=2000;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 220,
+        "wires": [
+            [
+                "44d4875b94478d57"
+            ]
+        ]
+    },
+    {
+        "id": "786fddfb86b1d05f",
+        "type": "debug",
+        "z": "94d3083d860723e4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "56328a6fa22f6645",
+        "type": "comment",
+        "z": "94d3083d860723e4",
+        "name": "트리거 리셋",
+        "info": "",
+        "x": 200,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "697cf6244abedb2d",
+        "type": "comment",
+        "z": "94d3083d860723e4",
+        "name": "트리거 타임 설정",
+        "info": "",
+        "x": 200,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "951d73d36ca0f76c",
+        "type": "comment",
+        "z": "94d3083d860723e4",
+        "name": "Delay 타임 설정",
+        "info": "",
+        "x": 200,
+        "y": 180,
+        "wires": []
+    }
+]
+```
