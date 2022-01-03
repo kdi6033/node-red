@@ -900,3 +900,310 @@ Delay와 Trriger의 사용법과 Function에서 변수로 처리하는 방법을
     }
 ]
 ```
+## 5.6.16 Sort 순차배열 함수 만들기  
+[유튜브보기](https://youtu.be/imSso-oGhHU)  
+배열로 되어있는 데이터를 순차적으로 배열 한다.
+소스프로그램  
+```
+[
+    {
+        "id": "fc3041ec.c63f3",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "index",
+                "v": "high_1",
+                "vt": "str"
+            },
+            {
+                "p": "id",
+                "v": "high_1",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "10",
+        "payloadType": "num",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "6928ac67.618e64"
+            ]
+        ]
+    },
+    {
+        "id": "eb1f8b0.c8f7f78",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "index",
+                "v": "high_2",
+                "vt": "str"
+            },
+            {
+                "p": "id",
+                "v": "high_2",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "20",
+        "payloadType": "num",
+        "x": 190,
+        "y": 120,
+        "wires": [
+            [
+                "6928ac67.618e64"
+            ]
+        ]
+    },
+    {
+        "id": "d17c5c48.29bc2",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "index",
+                "v": "high_3",
+                "vt": "str"
+            },
+            {
+                "p": "id",
+                "v": "high_3",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "30",
+        "payloadType": "num",
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "6928ac67.618e64"
+            ]
+        ]
+    },
+    {
+        "id": "8b3186aa.6d6998",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "index",
+                "v": "high_4",
+                "vt": "str"
+            },
+            {
+                "p": "id",
+                "v": "high_4",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "40",
+        "payloadType": "num",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "6928ac67.618e64"
+            ]
+        ]
+    },
+    {
+        "id": "6928ac67.618e64",
+        "type": "join",
+        "z": "598d26db7dcb799c",
+        "name": "phase_1",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "index",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "4",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 420,
+        "y": 120,
+        "wires": [
+            [
+                "65983bcfc28c241f"
+            ]
+        ]
+    },
+    {
+        "id": "65983bcfc28c241f",
+        "type": "change",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$each($$.payload, function($v,$k){\t{$k:$v}\t})^(<*)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 120,
+        "wires": [
+            [
+                "287b235e0123b2d7"
+            ]
+        ]
+    },
+    {
+        "id": "287b235e0123b2d7",
+        "type": "debug",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4ed0478c0c4ceab8",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"high_2\":20,\"high_1\":10,\"high_3\":30,\"high_4\":40}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 280,
+        "wires": [
+            [
+                "65983bcfc28c241f"
+            ]
+        ]
+    },
+    {
+        "id": "5ba1464bfcf56af5",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"a1\":\"adc\",\"a2\":\"hye\",\"a3\":\"crt\",\"a4\":\"abc\"}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "65983bcfc28c241f"
+            ]
+        ]
+    },
+    {
+        "id": "7656e50cfa566965",
+        "type": "inject",
+        "z": "598d26db7dcb799c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"a1\":\"1-3\",\"a2\":\"1-1-2\",\"a3\":\"1-1\",\"a4\":\"1-2\"}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 360,
+        "wires": [
+            [
+                "65983bcfc28c241f"
+            ]
+        ]
+    }
+]
+```
