@@ -455,8 +455,8 @@ Node red 의 Scheduler를 이용하여 일주일 단위의 동작 시간을 설�
 ]
 ```
 
-## 5.6.15 Delay와 Trriger 노드 사용번  
-[유튜브보기](https://youtu.be/j45z6Q8Q-No)  
+## 5.6.15 Delay와 Trriger 노드 사용법  
+[유튜브보기](https://youtu.be/imSso-oGhHU)  
 Delay와 Trriger의 사용법과 Function에서 변수로 처리하는 방법을 설명한다.
 소스프로그램  
 ```
