@@ -1,0 +1,2071 @@
+[
+    {
+        "id": "10a86fdc.efc16",
+        "type": "subflow",
+        "name": "Iterate",
+        "in": [
+            {
+                "x": 220,
+                "y": 219,
+                "wires": [
+                    {
+                        "id": "8709b651.7ce108"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 454,
+                "y": 174,
+                "wires": [
+                    {
+                        "id": "8709b651.7ce108",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 455,
+                "y": 259,
+                "wires": [
+                    {
+                        "id": "8709b651.7ce108",
+                        "port": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "8709b651.7ce108",
+        "type": "function",
+        "z": "10a86fdc.efc16",
+        "name": "Iterate",
+        "func": "//Node has 2 outputs - 1 for itteration and 1 for completion\nvar nextObj, out;\nvar itt = msg.iterationInfo;\n\n\n//If the iterating has not yet begun set up the iteration metadata in the msg\nif (typeof itt === 'undefined') {\n    //Make sure payload is an array\n    if( Object.prototype.toString.call(msg.payload) !== '[object Array]' ) {\n       msg.payload = [msg.payload];\n    }\n\n    msg.iterationInfo = itt = {};\n    itt.index = -1;\n    itt.inArray = msg.payload;\n    itt.outArray = [];\n\n//Otherwise just push the input to the output array\n} else {\n    itt.outArray.push(msg.payload)\n}\n\n//Goto next object\nitt.index ++;\n\n//If there are stil objects left to iterate goto the next one in the original array\nif (itt.index < itt.inArray.length) {\n    nextObj = msg;\n    msg.payload = itt.inArray[itt.index];\n\n//otherwise pass the out array as the payload\n} else {\n    out = msg;\n    msg.payload = itt.outArray;\n    delete msg.iterationInfo;\n}\n\nreturn [nextObj, out];",
+        "outputs": "2",
+        "noerr": 0,
+        "x": 347,
+        "y": 220,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "396ea7ecd5c0a329",
+        "type": "tab",
+        "label": "Light Server 라이트토크",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f8dad2598a0fa906",
+        "type": "mqtt in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "topic": "/jlee/outTopic",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "5c69db01ee974130",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 760,
+        "wires": [
+            [
+                "964f4e7653af31d1"
+            ]
+        ]
+    },
+    {
+        "id": "c6ee709bc3baa898",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOne",
+        "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac, 'type':msg.payload.type};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 780,
+        "wires": [
+            [
+                "abeea05d23786dae"
+            ]
+        ]
+    },
+    {
+        "id": "dd94735fa20c8f2f",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 830,
+        "y": 780,
+        "wires": [
+            [
+                "44cd2372d0beb0c3"
+            ],
+            [
+                "f85302cd4f27346e"
+            ]
+        ]
+    },
+    {
+        "id": "44cd2372d0beb0c3",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "insert one",
+        "func": "var msg=global.get(\"msg_in\")||\"\";\nvar model=[];\nmodel[2]='PE-300';\nmodel[3]='키우미';\nmodel[4]='KSM-8900';\nmodel[5]='simpleTH';\nmodel[6]='XEX-DR14E';\nmodel[7]='DHT11';\nmodel[8]='RY-WS301';\nmodel[9]='MP-508E';\nmodel[10]='사운드';\nmodel[11]='충격센서';\nmodel[12]='PLC-RS485';\nmodel[13]='차양모터';\nmodel[14]='MASTER-K120s';\nmodel[15]='오존센서';\n\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'insert';\nif(msg.payload.type==6)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0,0,0] };\nelse if(msg.payload.type==12 || msg.payload.type==14)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0] };\nelse\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':''};\nnewMsg.payload.mac = msg.payload.mac;\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 760,
+        "wires": [
+            [
+                "3e2dc536b85feaa5"
+            ]
+        ]
+    },
+    {
+        "id": "f85302cd4f27346e",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOneUpdate",
+        "func": "var time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nif(msg.payload.type==2)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'ec':msg.payload.ec, 'ph':msg.payload.ph, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==3)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'co2':msg.payload.co2, 'time':time}} ];\nelse if(msg.payload.type==4)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'mo':msg.payload.mo, 'tem':msg.payload.tem, 'ec':msg.payload.ec, 'time':time}} ];\nelse if(msg.payload.type==5)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==6)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==7)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'time':time }} ];\nelse if(msg.payload.type==8)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'pres':msg.payload.pres, 'time':time }} ];\nelse if(msg.payload.type==9)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'ec':msg.payload.ec, 'time':time }} ];\nelse if(msg.payload.type==10)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'sound':msg.payload.sound\n    , 'time':time }} ];\nelse if(msg.payload.type==11)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'knock':msg.payload.knock\n    , 'time':time }} ];\nelse if(msg.payload.type==12)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==13)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time\n     }} ];\nelse if(msg.payload.type==14)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{'ip':msg.payload.ip, 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5), 'time':time }} ];\nelse if(msg.payload.type==15)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'gas':msg.payload.gas\n    , 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 800,
+        "wires": [
+            [
+                "36629f5d289ff818"
+            ]
+        ]
+    },
+    {
+        "id": "964f4e7653af31d1",
+        "type": "json",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 310,
+        "y": 760,
+        "wires": [
+            [
+                "c6ee709bc3baa898",
+                "0b501f74e5359553"
+            ]
+        ]
+    },
+    {
+        "id": "9501fcdc6afd7135",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/login",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 40,
+        "wires": [
+            [
+                "7eba1128a0923ce9"
+            ]
+        ]
+    },
+    {
+        "id": "a4cb2dd4992d25d1",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "style",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "body {\n    background: #eab0dc;\n    font-family: Arial, Helvetica, sans-serif;\n}\ntable, th, td {\n    padding: 2px;\n    border-collapse: collapse;\n    border: 1px solid #dddddd;\n    text-align: center;\n    vertical-align: middle;\n}\n\n\n/* Full-width input fields */\ninput[type=text], input[type=password] {\n  width: 150px;\n  padding: 5px 10px;\n  margin: 8px 0;\n  display: inline-block;\n  border: 1px solid #ccc;\n  box-sizing: border-box;\n}\n\n/* Set a style for all buttons */\nbutton {\n  background-color: #4CAF50; /*Green*/\n  color: white;\n  padding: 14px 20px;\n  margin: 8px 0;\n  border: none;\n  cursor: pointer;\n}\n\n.buttonMenu {\n          padding: 5px 24px;\n          margin-left:20%;\n          background-color:black;\n          border: none;\n          border-color:black;\n          color:white;\n          text-align: left;\n          text-decoration: none;\n          display: inline-block;\n          font-size: 16px;\n          margin: 4px 2px;\n          cursor: pointer;\n        }\n        .sidenav {\n          height: 100%;\n          width: 0;\n          position: fixed;\n          z-index: 1;\n          top: 0;\n          left: 0;\n          background-color: #111;\n          overflow-x: hidden;\n          transition: 0.5s;\n          padding-top: 60px;\n        }\n        .sidenav a {\n          padding: 8px 8px 8px 32px;\n          text-decoration: none;\n          font-size: 18px;\n          color: #818181;\n          display: block;\n                transition: 0.3s;\n        }\n        .sidenav a:hover {\n          color: #f1f1f1;\n        }\n        .sidenav .closebtn {\n          position: absolute;\n          top: 0;\n          right: 25px;\n          font-size: 36px;\n          margin-left: 50px;\n        }\n\n.buttonM {background-color: #ff66cc;color:white; width:100px; height:20px; padding: 0px 0px; font-size: 16px} /* 기기선택 */  \n.buttonL {background-color: #ff66cc;color:white; width:100px; height:25px; padding: 0px 0px; font-size: 16px} /* 선택 */  \n.buttonMenu {background-color: #000000;} \n.button2 {background-color: #008CBA;} /* Blue */\n.button3 {background-color: #f44336;} /* Red */ \n.button4 {background-color: #e7e7e7; color: black;} /* Gray */ \n.button5 {background-color: #555555;} /* Black */\n.button20 {width: 20%;} \n.button-on {border-radius: 100%; padding: 20px; font-size: 18px; margin: 0px 0px; background-color: #4CAF50;}\n.button-off {border-radius: 100%; padding: 20px; font-size: 18px; background-color: #707070;}\n.button-ledon {border-radius: 100%; padding: 10px; font-size: 8px; margin: 0px 0px; background-color: #ff4500;}\n.button-ledoff {border-radius: 100%; padding: 10px; font-size: 8px; background-color: #707070;}\n\nbutton:hover {\n  opacity: 0.8;\n}\n\n/* Extra styles for the cancel button */\n.cancelbtn {\n  width: auto;\n  padding: 10px 18px;\n  background-color: #f44336;\n}\n\n/* Center the image and position the close button */\n.imgcontainer {\n  text-align: center;\n  margin: 24px 0 12px 0;\n  position: relative;\n}\n\nimg.avatar {\n  width: 40%;\n  border-radius: 50%;\n}\n\n.container {\n  padding: 16px;\n}\n\nspan.psw {\n  float: right;\n  padding-top: 16px;\n}\n\n/* The Modal (background) */\n.modal {\n  display: none; /* Hidden by default */\n  position: fixed; /* Stay in place */\n  z-index: 1; /* Sit on top */\n  left: 0;\n  top: 0;\n  width: 100%; /* Full width */\n  height: 100%; /* Full height */\n  overflow: auto; /* Enable scroll if needed */\n  background-color: rgb(0,0,0); /* Fallback color */\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\n  padding-top: 60px;\n}\n\n/* Modal Content/Box */\n.modal-content {\n  background-color: #fefefe;\n  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */\n  border: 1px solid #888;\n  width: 80%; /* Could be more or less, depending on screen size */\n}\n\n/* The Close Button (x) */\n.close {\n  position: absolute;\n  right: 25px;\n  top: 0;\n  color: #000;\n  font-size: 35px;\n  font-weight: bold;\n}\n\n.close:hover,\n.close:focus {\n  color: red;\n  cursor: pointer;\n}\n\n/* Add Zoom Animation */\n.animate {\n  -webkit-animation: animatezoom 0.6s;\n  animation: animatezoom 0.6s\n}\n\n@-webkit-keyframes animatezoom {\n  from {-webkit-transform: scale(0)} \n  to {-webkit-transform: scale(1)}\n}\n  \n@keyframes animatezoom {\n  from {transform: scale(0)} \n  to {transform: scale(1)}\n}\n\n/* Change styles for span and cancel button on extra small screens */\n@media screen and (max-width: 300px) {\n  span.psw {\n     display: block;\n     float: none;\n  }\n  .cancelbtn {\n     width: 100%;\n  }\n}",
+        "x": 610,
+        "y": 40,
+        "wires": [
+            [
+                "6e93b1ca37f42012"
+            ]
+        ]
+    },
+    {
+        "id": "138fd7c542655c9b",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "script",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "// Get the modal\nvar modal = document.getElementById('id01');\n\n// When the user clicks anywhere outside of the modal, close it\nwindow.onclick = function(event) {\n    if (event.target == modal) {\n        modal.style.display = \"none\";\n    }\n}\n\nfunction openNav() {\n  document.getElementById(\"mySidenav\").style.width = \"150px\"; \n}\nfunction closeNav() {\n  document.getElementById(\"mySidenav\").style.width = \"0\";\n}\n",
+        "output": "str",
+        "x": 450,
+        "y": 40,
+        "wires": [
+            [
+                "a4cb2dd4992d25d1"
+            ]
+        ]
+    },
+    {
+        "id": "ba21b80c882f4115",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "global style",
+        "func": "global.set(\"style\",msg.payload.style);\nglobal.set(\"script\",msg.payload.script);\nglobal.set(\"menu\",msg.payload.menu);\nglobal.set(\"msg_main\",msg);\nmsg.act_arg = 3;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 40,
+        "wires": [
+            [
+                "1fa4fedc26adf789"
+            ]
+        ]
+    },
+    {
+        "id": "6e93b1ca37f42012",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "menu",
+        "field": "payload.menu",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "  <div id='mySidenav' class='sidenav'>\n  <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>\n  <a href='/display?act=3'>홈</a>\n  <a href='/display?act=4'>스케쥴러</a>\n  <a href='https://github.com/kdi6033/IoT' target='_blank'>메뉴얼</a>\n  <a href='http://i2r.link' target='_blank'>김동일홈피</a>\n  </div>\n  <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776; </span>\n    메뉴<br>  ",
+        "x": 750,
+        "y": 40,
+        "wires": [
+            [
+                "ba21b80c882f4115"
+            ]
+        ]
+    },
+    {
+        "id": "341b639319d58795",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "find.toArray",
+        "func": "global.set(\"msg_main\",msg);\nmsg.collection = 'localRecord';\nmsg.operation  =  'find.toArray';\nmsg.payload    = { };\nmsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 120,
+        "wires": [
+            [
+                "f2f11cb0489fb4d2"
+            ]
+        ]
+    },
+    {
+        "id": "55bee1015834a115",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1670,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "1bb86f08eafdbaa3",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "0,1,2,3 List",
+        "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nvar i,j;\nvar s;\nvar r;\nsOut=\"<table>\"\nsOut+=\"<tr>   <th>모델</th>  <th>모니터링</th> <th>이름</th> <th>IP</th> </tr>\"\nfor(i=0;i<msg.payload.length;i++) {\n    //r=\"<input type='hidden' name='chip' value='\"+msg.payload[i].chip+\"'>\";\n    s=\"\";\n    s+=\"<tr><th>\";\n    s+=\"<form action='/display'>\";\n        s+=\"<input type='hidden' name='mac' value='\"+msg.payload[i].mac+\"'>\";\n        s+=\"<input type='hidden' name='act' value='1'>\";\n        s+=\"<button type='submit' name='value' value='0' class='button buttonM'>\"+msg.payload[i].model+\"</button></a>\";\n    s+=\"</form>\";\n    s+=\"</th>\";\n    if(msg.payload[i].type==2) {\n        //s+=\"<td>ec:\"+msg.payload[i].ec+\"  ph:\"+msg.payload[i].ph+\"  온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==3) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"  CO2:\"+msg.payload[i].co2+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==4) {\n        //s+=\"<th>습도:\"+msg.payload[i].mo+\"  온도:\"+msg.payload[i].tem+\"  EC:\"+msg.payload[i].ec+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==5) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    } \n    /*\n    else if(msg.payload[i].type==6) {\n        s+=\"<td>\"\n            for(var j=0;j<8;j++) {\n                if(msg.payload[i].in[j]==1) \n                    s+=\"<button class='button button-ledon'>\"+j+\"</button>&nbsp;\";\n                else\n                    s+=\"<button class='button button-ledoff'>\"+j+\"</button>&nbsp;\";\n            }\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    */\n    else if(msg.payload[i].type==6) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==7) {\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==8) {\n        //s+=\"<td>습도:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  대기압:\"+msg.payload[i].pres+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==9) {\n        //s+=\"<td>함수율:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  EC:\"+msg.payload[i].ec+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==10) {\n        //s+=\"<td>사운드:\"+msg.payload[i].sound+\" \"+msg.payload[i].time+\"</td> \";\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==11) {\n        //s+=\"<td>충격발생:\"+msg.payload[i].time+\"</td> \"\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==12) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==13) {\n        s+=\"<td>\"\n            s+=\"<table align='center' style='margin: 0px auto;'>\";\n            s+=\"<tr>\";\n            s+=\"<td>정지</td>\";\n            s+=\"<td>올림</td>\";\n            s+=\"<td>내림</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==14) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==15) {\n        s+=\"<td>\";\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    /*\n    else if(msg.payload[i].type==14) {\n        s+=\"<td>\"\n            for(var j=0;j<8;j++) {\n                if(msg.payload[i].in[j]==1) \n                    s+=\"<button class='button button-ledon'>\"+j+\"</button>&nbsp;\";\n                else\n                    s+=\"<button class='button button-ledoff'>\"+j+\"</button>&nbsp;\";\n            }\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    */\n    \n    s+=\"<td><a href='http://\"+msg.payload[i].ip+\"' target='_blank'>\"+msg.payload[i].ip+\"</a></td>\";\n    s+=\"</tr>\"\n    \n    sOut=sOut+s+\"<br>\";\n} \n\nmsg.payload.list=sOut;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1050,
+        "y": 120,
+        "wires": [
+            [
+                "a6fc20d35723c990",
+                "57581ec8b69255dc"
+            ]
+        ]
+    },
+    {
+        "id": "72f318be24ed0a4f",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "msg 받음",
+        "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_main\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 120,
+        "wires": [
+            [
+                "1bb86f08eafdbaa3"
+            ]
+        ]
+    },
+    {
+        "id": "9c764b056f72bb30",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/display",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "0c3c5b88a2e2af4f"
+            ]
+        ]
+    },
+    {
+        "id": "5d4b788e2a11ce08",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "Display",
+        "info": "1: 선택한 기기 config\n2: 메뉴의 환경설정\n3: main  기기 리스트 모니터링\n4: 메뉴얼",
+        "x": 110,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "1d79fb52b5ea1fe4",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "get global",
+        "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nmsg.payload.act=global.get(\"act\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 80,
+        "wires": [
+            [
+                "a2067837c0225306"
+            ]
+        ]
+    },
+    {
+        "id": "a2067837c0225306",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "html 기기 name",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <style> {{{payload.style}}} </style>\n        <script> {{{payload.script}}} </script>\n</head>\n<body>\n   {{{payload.menu}}} \n   <br> &emsp;\n   <table>\n         <th>mac</th> <th>{{{payload.mac}}}</th>\n      </tr>\n      <tr>\n        <th>접속IP</th> <th>{{{payload.ip}}}</th>\n      </tr>\n      <tr>\n        <th>이름</th> \n            <form action=\"/save\" method=\"post\">\n                <input type='hidden' name='mac' value='{{{payload.mac}}}'>\n                <input type='hidden' name='act' value='1'>\n                <th><input type=\"text\" id=\"name\" name=\"name\" value=\"{{{payload.name}}}\"></th>\n                <th><button class='button buttonL' type=\"submit\" style=\"width:50px;\" >저장</button></th>\n            </form> \n      </tr>\n    </table>\n\n</body>\n</html>\n",
+        "output": "str",
+        "x": 1240,
+        "y": 80,
+        "wires": [
+            [
+                "8325ea62e69c7bb7"
+            ]
+        ]
+    },
+    {
+        "id": "f48f713d9684aa6d",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOne",
+        "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 80,
+        "wires": [
+            [
+                "6c45061b2d41608d"
+            ]
+        ]
+    },
+    {
+        "id": "8325ea62e69c7bb7",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1410,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "0c3c5b88a2e2af4f",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "func": "global.set(\"msg_display\",msg);\nglobal.set(\"act\",msg.payload.act);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 120,
+        "wires": [
+            [
+                "784ae38608f4ab17"
+            ]
+        ]
+    },
+    {
+        "id": "b677ae4379410383",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "msg 받음",
+        "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_display\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 80,
+        "wires": [
+            [
+                "1d79fb52b5ea1fe4"
+            ]
+        ]
+    },
+    {
+        "id": "784ae38608f4ab17",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload.act",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "4",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 430,
+        "y": 120,
+        "wires": [
+            [
+                "f48f713d9684aa6d"
+            ],
+            [],
+            [
+                "341b639319d58795"
+            ],
+            [
+                "b0acc58d9b78f7c4"
+            ]
+        ]
+    },
+    {
+        "id": "a24644f34a659693",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/save",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "dc589d055defdc66"
+            ]
+        ]
+    },
+    {
+        "id": "420e6040cdc62b36",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "Save",
+        "info": "1: name 저장\n",
+        "x": 110,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b20943c4b276d053",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOneUpdate",
+        "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'mac' : msg.payload.mac}, {$set:{ 'name':msg.payload.name}} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 220,
+        "wires": [
+            [
+                "87e029be053a0a60"
+            ]
+        ]
+    },
+    {
+        "id": "a30208ef2ae1d766",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "3f72aaa2a586b935",
+            "2044220.61e99de"
+        ],
+        "x": 1055,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c8d76dcf0fb6e836",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "msg 받음",
+        "func": "var msg=global.get(\"msg_in\")||\"\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 220,
+        "wires": [
+            [
+                "a30208ef2ae1d766"
+            ]
+        ]
+    },
+    {
+        "id": "dc589d055defdc66",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload.act",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 430,
+        "y": 220,
+        "wires": [
+            [
+                "b20943c4b276d053"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d333f1bf445673bf",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <meta http-equiv='refresh' content='0; url=http://{{payload.publicIPv4}}:1880/display?act=3' method='get'> \n    </head>\n    <body>\n       </body>\n</html",
+        "output": "str",
+        "x": 1670,
+        "y": 20,
+        "wires": [
+            [
+                "0ab807904cd7bf7e"
+            ]
+        ]
+    },
+    {
+        "id": "0ab807904cd7bf7e",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "Go Main Page",
+        "statusCode": "",
+        "headers": {},
+        "x": 1840,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "3f72aaa2a586b935",
+        "type": "link in",
+        "z": "396ea7ecd5c0a329",
+        "name": "Main",
+        "links": [
+            "6457ed09.277674",
+            "1f045d85.6a9eb2",
+            "250eafef.fdf1f",
+            "68a5f2a5.f5958c",
+            "d1b3b938.5fd1b8",
+            "425e599b.c1d808",
+            "174175dc.9ef7ea",
+            "1fa4fedc26adf789",
+            "a30208ef2ae1d766",
+            "871e2fa9219cdd56"
+        ],
+        "x": 1175,
+        "y": 40,
+        "wires": [
+            [
+                "e2fc1133ca338b26"
+            ]
+        ]
+    },
+    {
+        "id": "1fa4fedc26adf789",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "3f72aaa2a586b935"
+        ],
+        "x": 1075,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "97b170b715c38716",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "Act",
+        "info": "1: \n",
+        "x": 110,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "ca47796a0cafe97e",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/act",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 240,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7eba1128a0923ce9",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "func": "global.set(\"serverIP\",msg.payload.publicIPv4);\n//msg.payload=msg.payload.publicIPv4;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 40,
+        "wires": [
+            [
+                "138fd7c542655c9b"
+            ]
+        ]
+    },
+    {
+        "id": "50fa56c4520995c3",
+        "type": "websocket out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "server": "bf4882ef33e69fa3",
+        "client": "",
+        "x": 2060,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "1152e8a959f906a8",
+        "type": "websocket in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "server": "bf4882ef33e69fa3",
+        "client": "",
+        "x": 200,
+        "y": 900,
+        "wires": [
+            [
+                "96067068d6c76f3c"
+            ]
+        ]
+    },
+    {
+        "id": "ac1d5ca3dba04f1d",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "출력버튼 웹소켙",
+        "info": "",
+        "x": 180,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "58e31863674761f4",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "Main html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE HTML>\n<html>\n<head>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <style> {{{payload.style}}} </style>\n    <script> {{{payload.script}}} </script>\n    <script type=\"text/javascript\"> {{{payload.scriptSocket}}} </script>\n</head>\n<body onload=\"wsConnect();\" onunload=\"ws.disconnect();\">\n    {{{payload.menu}}} \n    {{{payload.list}}}\n</body>\n</html>\n\n",
+        "x": 1480,
+        "y": 120,
+        "wires": [
+            [
+                "55bee1015834a115"
+            ]
+        ]
+    },
+    {
+        "id": "a6fc20d35723c990",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "Web Socket scriptSocket",
+        "field": "payload.scriptSocket",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "        var ws;\n        var wsUri = \"ws:\";\n        var loc = window.location;\n        console.log(loc);\n        if (loc.protocol === \"https:\") { wsUri = \"wss:\"; }\n        // This needs to point to the web socket in the Node-RED flow\n        // ... in this case it's ws/simple\n        wsUri += \"//\" + loc.host + loc.pathname.replace(\"display\",\"ws/simple990115\");\n\n        function wsConnect() {\n            console.log(\"connect\",wsUri);\n            ws = new WebSocket(wsUri);\n            //var line = \"\";    // either uncomment this for a building list of messages\n            ws.onmessage = function(msg) {\n                var line = \"\";  // or uncomment this to overwrite the existing message\n                // parse the incoming message as a JSON object\n                var data = JSON.parse(msg.data);\n                //var data = msg.data;\n                console.log(data);\n                if(data.type==2) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"EC:\"+data.ec;\n                    document.getElementById(data.mac+'-in1').innerHTML = \"PH:\"+data.ph;\n                    document.getElementById(data.mac+'-in2').innerHTML = \"온도:\"+data.temp+\"도\";\n                }\n                if(data.type==3) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"습도:\"+data.humi+\"%\";\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.temp+\"도\";\n                    document.getElementById(data.mac+'-in2').innerHTML = \"CO2:\"+data.co2;\n                }\n                if(data.type==4) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"습도:\"+data.mo+\"%\";\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.tem+\"도\";\n                    document.getElementById(data.mac+'-in2').innerHTML = \"EC:\"+data.ec;\n                }\n                if(data.type==5) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"습도:\"+data.humi+\"%\";\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.temp+\"도\";\n                }\n                else if(data.type==6) {\n                    if(data.in[0]=='1') \n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[1]=='1') \n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[2]=='1') \n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[3]=='1') \n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[4]=='1') \n                        document.getElementById(data.mac+'-in4').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in4').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[5]=='1') \n                        document.getElementById(data.mac+'-in5').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in5').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[6]=='1') \n                        document.getElementById(data.mac+'-in6').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in6').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[7]=='1') \n                        document.getElementById(data.mac+'-in7').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in7').innerHTML = \"<button class='button button-ledoff' ></button>\";\n\n                    if(data.out[0]=='1')\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:0,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:0,^value^:1}\\\");'></button>\";\n                    if(data.out[1]=='1')\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:1,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:1,^value^:1}\\\");'></button>\";\n                    if(data.out[2]=='1')\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:2,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:2,^value^:1}\\\");'></button>\";\n                    if(data.out[3]=='1')\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:3,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:3,^value^:1}\\\");'></button>\";\n                    if(data.out[4]=='1')\n                        document.getElementById(data.mac+'-out4').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:4,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out4').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:4,^value^:1}\\\");'></button>\";\n                    if(data.out[5]=='1')\n                        document.getElementById(data.mac+'-out5').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:5,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out5').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:6,^outNo^:5,^value^:1}\\\");'></button>\";\n                }\n                else if(data.type==7) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"습도:\"+data.humi;\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.temp;\n                }\n                else if(data.type==8) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"습도:\"+data.humi;\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.temp;\n                    document.getElementById(data.mac+'-in2').innerHTML = \"대기압:\"+data.pres;\n                }\n                else if(data.type==9) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"함수율:\"+data.humi+\"%\";\n                    document.getElementById(data.mac+'-in1').innerHTML = \"온도:\"+data.temp+\"도\";\n                    document.getElementById(data.mac+'-in2').innerHTML = \"EC:\"+data.ec;\n                }\n                else if(data.type==10) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"사운드:\"+data.sound;\n                }\n                else if(data.type==11) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"충격발생:\"+data.knock;\n                }\n                else if(data.type==12) {\n                    if(data.in[0]=='1') \n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[1]=='1') \n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[2]=='1') \n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[3]=='1') \n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledoff' ></button>\";\n\n                    if(data.out[0]=='1')\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:0,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:0,^value^:1}\\\");'></button>\";\n                    if(data.out[1]=='1')\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:1,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:1,^value^:1}\\\");'></button>\";\n                    if(data.out[2]=='1')\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:2,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:2,^value^:1}\\\");'></button>\";\n                    if(data.out[3]=='1')\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:3,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:12,^outNo^:3,^value^:1}\\\");'></button>\";\n                }\n                if(data.type==13) {\n                    if(data.state==0) {\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:0}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:1}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:2}\\\");'></button>\";\n                    }\n                    else if(data.state==1) {\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:0}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:1}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:2}\\\");'></button>\";\n                    }\n                    else if(data.state==2) {\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:0}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:1}\\\");'></button>\";\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:13,^state^:2}\\\");'></button>\";\n                    }\n\n                 }\n                 else if(data.type==14) {\n                    \n                    if(data.out[0]=='1')\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:0,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out0').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:0,^value^:1}\\\");'></button>\";\n                    if(data.out[1]=='1')\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:1,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out1').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:1,^value^:1}\\\");'></button>\";\n                    if(data.out[2]=='1')\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:2,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out2').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:2,^value^:1}\\\");'></button>\";\n                    if(data.out[3]=='1')\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-on' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:3,^value^:0}\\\");'></button>\";\n                    else\n                        document.getElementById(data.mac+'-out3').innerHTML = \"<button class='button button-off' onclick='doit(\\\"{^mac^:^\"+data.mac+\"^,^type^:14,^outNo^:3,^value^:1}\\\");'></button>\";\n                    \n                    if(data.in[0]=='1') \n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in0').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[1]=='1') \n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in1').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[2]=='1') \n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in2').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[3]=='1') \n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in3').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[4]=='1') \n                        document.getElementById(data.mac+'-in4').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in4').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    if(data.in[5]=='1') \n                        document.getElementById(data.mac+'-in5').innerHTML = \"<button class='button button-ledon' ></button>\";\n                    else\n                        document.getElementById(data.mac+'-in5').innerHTML = \"<button class='button button-ledoff' ></button>\";\n                    \n                }\n                else if(data.type==15) {\n                    document.getElementById(data.mac+'-in0').innerHTML = \"오존농도:\"+data.gas;\n                }\n            }\n            ws.onopen = function() {\n                // update the status div with the connection status\n                //document.getElementById('status').innerHTML = \"connected\";\n                //ws.send(\"Open for data\");\n                console.log(\"connected\");\n            }\n            ws.onclose = function() {\n                // update the status div with the connection status\n                //document.getElementById('status').innerHTML = \"not connected\";\n                // in case of lost connection tries to reconnect every 3 secs\n                setTimeout(wsConnect,3000);\n            }\n        }\n        \n        function doit(m) {\n            if (ws) { ws.send(m); }\n        }\n",
+        "x": 1270,
+        "y": 120,
+        "wires": [
+            [
+                "58e31863674761f4"
+            ]
+        ]
+    },
+    {
+        "id": "96067068d6c76f3c",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "func": "var msg = {payload:msg.payload.replace(/['^']/g, \"\\\"\")};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 900,
+        "wires": [
+            [
+                "5f8638bcbe5298c1",
+                "6d4c247c2f447529"
+            ]
+        ]
+    },
+    {
+        "id": "5f8638bcbe5298c1",
+        "type": "json",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 590,
+        "y": 860,
+        "wires": [
+            [
+                "6d22b424518a680c"
+            ]
+        ]
+    },
+    {
+        "id": "6d22b424518a680c",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOneUpdate",
+        "func": "global.set(\"msg_in\",msg);\nvar time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\n\nif(msg.payload.type==6 ||msg.payload.type==12 || msg.payload.type==14) {\n    if(msg.payload.outNo == 0)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.0':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 1)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.1':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 2)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.2':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 3)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.3':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 4)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.4':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 5)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.5':msg.payload.value, 'time':time }} ];\n}\nelse if(msg.payload.type==13) \n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 900,
+        "wires": [
+            [
+                "73d8e4b52cc8680c"
+            ]
+        ]
+    },
+    {
+        "id": "b63d45b1763949ed",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "입력버튼 웹소켙",
+        "info": "",
+        "x": 160,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "6d4c247c2f447529",
+        "type": "mqtt out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "topic": "/jlee/inTopic",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5c69db01ee974130",
+        "x": 610,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "3e2dc536b85feaa5",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "96a0c5a1765caa96"
+        ],
+        "x": 1195,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "36629f5d289ff818",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "96a0c5a1765caa96"
+        ],
+        "x": 1195,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "73d8e4b52cc8680c",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "96a0c5a1765caa96"
+        ],
+        "x": 995,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "96a0c5a1765caa96",
+        "type": "link in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "3e2dc536b85feaa5",
+            "36629f5d289ff818",
+            "73d8e4b52cc8680c"
+        ],
+        "x": 1335,
+        "y": 800,
+        "wires": [
+            [
+                "287b316078d6ff39"
+            ]
+        ]
+    },
+    {
+        "id": "3a614b5eab4a7b2b",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOne",
+        "func": "var msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1620,
+        "y": 800,
+        "wires": [
+            [
+                "1313ea390cc6e0b4"
+            ]
+        ]
+    },
+    {
+        "id": "5305919dc6eefb82",
+        "type": "subflow:10a86fdc.efc16",
+        "z": "396ea7ecd5c0a329",
+        "name": "Iterate",
+        "env": [],
+        "x": 2790,
+        "y": 600,
+        "wires": [
+            [
+                "dff32cfdd68f7b28",
+                "07c1ce0f46f80c67"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "07c1ce0f46f80c67",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2780,
+        "y": 540,
+        "wires": [
+            [
+                "5305919dc6eefb82"
+            ]
+        ]
+    },
+    {
+        "id": "dff32cfdd68f7b28",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOne",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2780,
+        "y": 640,
+        "wires": [
+            [
+                "1313ea390cc6e0b4"
+            ]
+        ]
+    },
+    {
+        "id": "57581ec8b69255dc",
+        "type": "delay",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 2780,
+        "y": 500,
+        "wires": [
+            [
+                "5305919dc6eefb82"
+            ]
+        ]
+    },
+    {
+        "id": "6874a76ba4dcf9a3",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "웹페이지 초기화",
+        "info": "",
+        "x": 2780,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "abeea05d23786dae",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "2a5d3bd420e73247",
+        "name": "기기 검색",
+        "collection": "",
+        "operation": "",
+        "x": 680,
+        "y": 780,
+        "wires": [
+            [
+                "dd94735fa20c8f2f"
+            ]
+        ]
+    },
+    {
+        "id": "287b316078d6ff39",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "2a5d3bd420e73247",
+        "name": "등록",
+        "collection": "",
+        "operation": "",
+        "x": 1450,
+        "y": 800,
+        "wires": [
+            [
+                "3a614b5eab4a7b2b"
+            ]
+        ]
+    },
+    {
+        "id": "f2f11cb0489fb4d2",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "local",
+        "collection": "",
+        "operation": "",
+        "x": 730,
+        "y": 120,
+        "wires": [
+            [
+                "72f318be24ed0a4f"
+            ]
+        ]
+    },
+    {
+        "id": "6c45061b2d41608d",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "기기 검색",
+        "collection": "",
+        "operation": "",
+        "x": 740,
+        "y": 80,
+        "wires": [
+            [
+                "b677ae4379410383"
+            ]
+        ]
+    },
+    {
+        "id": "87e029be053a0a60",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "등록 name",
+        "collection": "",
+        "operation": "",
+        "x": 770,
+        "y": 220,
+        "wires": [
+            [
+                "c8d76dcf0fb6e836"
+            ]
+        ]
+    },
+    {
+        "id": "1313ea390cc6e0b4",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "기기 검색",
+        "collection": "",
+        "operation": "",
+        "x": 1820,
+        "y": 800,
+        "wires": [
+            [
+                "50fa56c4520995c3"
+            ]
+        ]
+    },
+    {
+        "id": "e2fc1133ca338b26",
+        "type": "ip",
+        "z": "396ea7ecd5c0a329",
+        "name": "node-red-contrib-ip",
+        "https": false,
+        "timeout": "5000",
+        "internalIPv4": true,
+        "internalIPv6": true,
+        "publicIPv4": true,
+        "publicIPv6": false,
+        "x": 1310,
+        "y": 40,
+        "wires": [
+            [
+                "3fd4ccf80bb82a9c"
+            ]
+        ]
+    },
+    {
+        "id": "5efedb158850f25c",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <style> {{{payload.style}}} </style>\n        <script> {{{payload.script}}} </script>\n</head>\n<body>\n   {{{payload.menu}}} \n</body>\n<h2>날짜 및 시간을 선택해 주세요.</h2>\n<p>완료된 작업은 자동으로 목록에서 제거됩니다.</p>\n<body>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css\">\n  <link rel=\"stylesheet\" href=\"/resources/demos/style.css\">\n  <script src=\"https://code.jquery.com/jquery-3.6.0.js\"></script>\n  <script src=\"https://code.jquery.com/ui/1.13.0/jquery-ui.js\"></script>\n  <script>\n  $( function() {\n    $( \"#datepicker\" ).datepicker();\n  } );\n  </script>\n</body>\n<form action=\"/schedule\" method=\"post\">\n            <input type='hidden' name='act' value='1'>\n            <div class=\"container\">\n              <p>가동 날짜: <input type=\"text\" id=\"datepicker\" name=\"date\" required></p>\n              <p>시작 시간: <input type=\"time\" id=\"startTime\" name=\"startTime\" required></p>\n              <p>종료 시간: <input type=\"time\" id=\"endTime\" name= \"endTime\" required></p>\n              <button class='button' type=\"submit\" style=\"width:auto;\">스케쥴 추가</button>\n            </div>\n</form>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  width: 100%;\n  border: 1px solid #ddd;\n}\n\nth, td {\n  text-align: left;\n  padding: 8px;\n}\n\ntr:nth-child(even){background-color: #f2f2f2}\n</style>\n<head>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  width: 100%;\n  border: 1px solid #ddd;\n}\n\nth, td {\n  text-align: left;\n  padding: 8px;\n}\n\ntr:nth-child(even){background-color: #f2f2f2}\n</style>\n</head>\n<body>\n\n<h2>스케쥴 목록</h2>\n\n<div style=\"overflow-x:auto;\">\n{{{payload.lists}}}\n</div>\n\n</body>\n</html>",
+        "output": "str",
+        "x": 1260,
+        "y": 160,
+        "wires": [
+            [
+                "a5b2f9458bbcedc5"
+            ]
+        ]
+    },
+    {
+        "id": "cfcbe0ccc3bc707b",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "get global",
+        "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nmsg.payload.act=global.get(\"act\");\nsc = \"<table>\";\nsc+=\"<tr>    <th>번호</th>   <th>시간</th>    </tr>\";\nfor(var i=0; i<msg.payload.length; i++){\n    sc+=\"<tr>\";\n    sc+=\"<td>\"+String(i+1)+\"</td>\";\n    sc+=\"<th>\"+msg.payload[i].startTimeWithDate+\"~\"+msg.payload[i].endTimeWithDate+\"</th>\";\n    sc+=\"</tr>\";\n}\nsc+=\"</table>\";\nmsg.payload.lists = sc;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 160,
+        "wires": [
+            [
+                "5efedb158850f25c"
+            ]
+        ]
+    },
+    {
+        "id": "eebbcaab1ef0acc1",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "스케쥴 추가",
+        "collection": "",
+        "operation": "",
+        "x": 750,
+        "y": 460,
+        "wires": [
+            [
+                "5a33b3d0ffc3d185"
+            ]
+        ]
+    },
+    {
+        "id": "a5b2f9458bbcedc5",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1430,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5ebd3223e2207e81",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "Schedule",
+        "info": "1: \n",
+        "x": 120,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "8e885858d8a39592",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/schedule",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 460,
+        "wires": [
+            [
+                "1da1c693503f3849"
+            ]
+        ]
+    },
+    {
+        "id": "1da1c693503f3849",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "payload.act",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 270,
+        "y": 460,
+        "wires": [
+            [
+                "b48bc35c51f84c2b"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "aab8648424480164",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "insert one",
+        "func": "var newMsg = {};\nnewMsg.collection = 'scheduler_queue';\nnewMsg.operation  = 'insert';\nnewMsg.payload = {\n    \"date\" : msg.date,\n    \"startTime\": msg.startTime,\n    \"endTime\" : msg.endTime,\n    \"activationTime\" : msg.activationTime,\n    \"startTimeWithDate\" : msg.startTimeWithDate,\n    \"endTimeWithDate\" : msg.endTimeWithDate\n};\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 460,
+        "wires": [
+            [
+                "eebbcaab1ef0acc1"
+            ]
+        ]
+    },
+    {
+        "id": "b48bc35c51f84c2b",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "parseDate",
+        "func": "global.set(\"msg_in\", msg);\nvar date = msg.payload.date;\nvar startTime = msg.payload.startTime;\nvar endTime = msg.payload.endTime;\nvar m=\"\",d=\"\",y=\"\";\nvar sh= \"\", sm= \"\", eh= \"\", em= \"\";\nvar i = 0;\nwhile(date[i]!='/') m+=date[i++];\ni++;\nwhile(date[i]!='/') d+=date[i++];\ni++;\nfor(var j=i; j<date.length; j++) y+=date[j];\nmsg.activationTime = (new Date(y+\"-\"+m+\"-\"+d+\" \"+endTime+\":00\")- new Date(y+\"-\"+m+\"-\"+d+\" \"+startTime+\":00\"))/1000;\nglobal.set(\"actime\", msg.activationTime);\nmsg.startTime = startTime;\nmsg.startTimeWithDate = y+\"-\"+m+\"-\"+d+\" \"+startTime+\":00\";\nmsg.endTimeWithDate = y+\"-\"+m+\"-\"+d+\" \"+endTime+\":00\";\nvar arr = [];\nif(global.get('array')==undefined){\n    arr.push([msg.startTimeWithDate, msg.endTimeWithDate]);\n    global.set('array', arr);\n}\nelse{\n    var tmparr = global.get('array');\n    tmparr.push([msg.startTimeWithDate, msg.endTimeWithDate]);\n    global.set('array', tmparr);\n}\nglobal.set('sttime', msg.startTimeWithDate);\nglobal.set('edtime', msg.endTimeWithDate);\nmsg.endTime = endTime;\nmsg.date = date;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 460,
+        "wires": [
+            [
+                "aab8648424480164",
+                "b7139a55234698b0"
+            ]
+        ]
+    },
+    {
+        "id": "5a33b3d0ffc3d185",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "msg 받음",
+        "func": "var msg=global.get(\"msg_in\")||\"\";\n//global.set('msg_refHTML', msg);\nmsg.act_arg = 4;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 460,
+        "wires": [
+            [
+                "6280748dc72d065f",
+                "871e2fa9219cdd56"
+            ]
+        ]
+    },
+    {
+        "id": "84bbc25bc1636135",
+        "type": "delay",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1240,
+        "y": 480,
+        "wires": [
+            [
+                "af1d5633d3234bb2",
+                "c3b386c73a4d5646"
+            ]
+        ]
+    },
+    {
+        "id": "0d82a87843e7112f",
+        "type": "delay",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1560,
+        "y": 480,
+        "wires": [
+            [
+                "55d67b994e8f3fff"
+            ]
+        ]
+    },
+    {
+        "id": "af1d5633d3234bb2",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "delay time (off)",
+        "func": "msg.delay = global.get(\"actime\")*1000;\nmsg.mqttarg = 0;\ncnt = global.get('msg_cnt');\nglobal.set('msg_cnt', cnt-1);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1400,
+        "y": 480,
+        "wires": [
+            [
+                "0d82a87843e7112f"
+            ]
+        ]
+    },
+    {
+        "id": "6280748dc72d065f",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "delay time(on)",
+        "func": "const KR_TIME_DIFF = 9 * 60 * 60 * 1000;\nconst curr = new Date();\nconst utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);\nvar dif = new Date(global.get(\"sttime\"))- new Date(utc + KR_TIME_DIFF);\nmsg.delay = dif;\nmsg.mqttarg = 1; //json을 on으로 보낼지 off로 보낼지\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 480,
+        "wires": [
+            [
+                "84bbc25bc1636135"
+            ]
+        ]
+    },
+    {
+        "id": "d6b1bcedc645988a",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "스케쥴이 끝나면 목록에서 제거",
+        "info": "",
+        "x": 1890,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9b8d36e1e8f1d298",
+        "type": "link in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "2c2b651671442301",
+            "b7874d369233c91a"
+        ],
+        "x": 1695,
+        "y": 620,
+        "wires": [
+            [
+                "197f2af5e8d87c3b"
+            ]
+        ]
+    },
+    {
+        "id": "530575ab47891e4b",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 2050,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "197f2af5e8d87c3b",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "findOneAndDelete",
+        "func": "var newMsg = {};\nvar arr = global.get('array');\nvar operations = arr.shift(); \nvar sttime = operations[0];\nvar edtime = operations[1];\nnewMsg.collection = \"scheduler_queue\";\nnewMsg.operation = \"findOneAndDelete\";\nnewMsg.payload = {\n    \"startTimeWithDate\":  sttime,\n    \"endTimeWithDate\" : edtime              \n};\nglobal.set('array', arr);\nnewMsg.test2 = global.get('array');\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1850,
+        "y": 620,
+        "wires": [
+            [
+                "530575ab47891e4b",
+                "11186465cb34d20a"
+            ]
+        ]
+    },
+    {
+        "id": "c7cc8ed63024a8d7",
+        "type": "mongodb2 in",
+        "z": "396ea7ecd5c0a329",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 730,
+        "y": 160,
+        "wires": [
+            [
+                "f4f3ce67a7b9e77e"
+            ]
+        ]
+    },
+    {
+        "id": "b0acc58d9b78f7c4",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "find.toArray",
+        "func": "global.set(\"msg_m\", msg);\nvar newMsg = {};\nnewMsg.collection = \"scheduler_queue\";\nnewMsg.operation = \"find.toArray\"\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 160,
+        "wires": [
+            [
+                "c7cc8ed63024a8d7"
+            ]
+        ]
+    },
+    {
+        "id": "f4f3ce67a7b9e77e",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "msg 받음",
+        "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_m\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 160,
+        "wires": [
+            [
+                "cfcbe0ccc3bc707b"
+            ]
+        ]
+    },
+    {
+        "id": "0b501f74e5359553",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "722146f1466da93f"
+        ],
+        "x": 455,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "3fd4ccf80bb82a9c",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "property": "act_arg",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "4",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 1510,
+        "y": 40,
+        "wires": [
+            [],
+            [],
+            [
+                "d333f1bf445673bf"
+            ],
+            [
+                "ea88f9f390b87e63"
+            ]
+        ]
+    },
+    {
+        "id": "ea88f9f390b87e63",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <meta http-equiv='refresh' content='0; url=http://{{payload.publicIPv4}}:1880/display?act=4' method='get'> \n    </head>\n    <body>\n       </body>\n</html",
+        "output": "str",
+        "x": 1670,
+        "y": 60,
+        "wires": [
+            [
+                "13befd084211e050"
+            ]
+        ]
+    },
+    {
+        "id": "13befd084211e050",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "refresh",
+        "statusCode": "",
+        "headers": {},
+        "x": 1840,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "871e2fa9219cdd56",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "3f72aaa2a586b935"
+        ],
+        "x": 1015,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4e95fe6ecbefabb1",
+        "type": "comment",
+        "z": "396ea7ecd5c0a329",
+        "name": "새로고침",
+        "info": "",
+        "x": 1100,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "af19790b0aa542e5",
+        "type": "mqtt out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "topic": "/jlee/inTopic",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5c69db01ee974130",
+        "x": 2210,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3e6d1393accaaf6d",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "to mqtt",
+        "func": "var newMsg = {};\nif(msg.mqttarg == 1){\n    newMsg.payload =\"{\\\"mac\\\":\\\"99391a4dffbc\\\",\\\"type\\\":12,\\\"outNo\\\":0,\\\"value\\\":1}\";\n}\nelse if(msg.mqttarg == 0){ \n    newMsg.payload =\"{\\\"mac\\\":\\\"99391a4dffbc\\\",\\\"type\\\":12,\\\"outNo\\\":0,\\\"value\\\":0}\";\n}\nnewMsg.del = msg.mqttarg;\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1950,
+        "y": 440,
+        "wires": [
+            [
+                "af19790b0aa542e5",
+                "64035776c5f2ae33"
+            ]
+        ]
+    },
+    {
+        "id": "c3b386c73a4d5646",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "ee1b8446cef72fe2"
+        ],
+        "x": 1335,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "55d67b994e8f3fff",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "ee1b8446cef72fe2"
+        ],
+        "x": 1675,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "ee1b8446cef72fe2",
+        "type": "link in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "links": [
+            "c3b386c73a4d5646",
+            "55d67b994e8f3fff"
+        ],
+        "x": 1755,
+        "y": 480,
+        "wires": [
+            [
+                "3e6d1393accaaf6d"
+            ]
+        ]
+    },
+    {
+        "id": "64035776c5f2ae33",
+        "type": "switch",
+        "z": "396ea7ecd5c0a329",
+        "name": "schedule ends",
+        "property": "del",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2200,
+        "y": 440,
+        "wires": [
+            [
+                "b7874d369233c91a"
+            ]
+        ]
+    },
+    {
+        "id": "b7874d369233c91a",
+        "type": "link out",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "9b8d36e1e8f1d298"
+        ],
+        "x": 2335,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "b7139a55234698b0",
+        "type": "debug",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "39056b1db4d4d7bc",
+        "type": "inject",
+        "z": "396ea7ecd5c0a329",
+        "name": "reset parameter to 0 (array)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 600,
+        "wires": [
+            [
+                "e4d58918bb56ed65"
+            ]
+        ]
+    },
+    {
+        "id": "e4d58918bb56ed65",
+        "type": "function",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "func": "global.set('array', undefined);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "11186465cb34d20a",
+        "type": "debug",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2020,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "cbc6f17aa1e74f4f",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/aatest",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 1040,
+        "wires": [
+            [
+                "991432e8c0e35355"
+            ]
+        ]
+    },
+    {
+        "id": "89ad548e83b4e623",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 640,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "991432e8c0e35355",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n<h2>날짜 및 시간을 선택해 주세요.</h2>\n<form action=\"/aaa\" method=\"get\">\n    <div class=\"datetime\">\n        <input type=\"time\" id=\"datetime1\" name='dateTime1'  >\n        <input type=\"time\" id=\"datetime2\" name='dateTime2'  >\n        <button class='button' type=\"submit\" style=\"width:auto;\">확인</button>\n    </div>\n</form>\n</html>",
+        "output": "str",
+        "x": 350,
+        "y": 1140,
+        "wires": [
+            [
+                "89ad548e83b4e623"
+            ]
+        ]
+    },
+    {
+        "id": "43142c7b9430ffe7",
+        "type": "http in",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "url": "/aaa",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 1220,
+        "wires": [
+            [
+                "fd22f9024f93ce78",
+                "fe42dc32d22b6cf1"
+            ]
+        ]
+    },
+    {
+        "id": "fd22f9024f93ce78",
+        "type": "template",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 410,
+        "y": 1260,
+        "wires": [
+            [
+                "9b96b213236cc959"
+            ]
+        ]
+    },
+    {
+        "id": "9b96b213236cc959",
+        "type": "http response",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 620,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "fe42dc32d22b6cf1",
+        "type": "debug",
+        "z": "396ea7ecd5c0a329",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "5c69db01ee974130",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a2qpy6ot038ohv-ats.iot.ap-northeast-2.amazonaws.com",
+        "port": "8883",
+        "tls": "e3bae96dea7fb9fe",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "bf4882ef33e69fa3",
+        "type": "websocket-listener",
+        "path": "/ws/simple990115",
+        "wholemsg": "false"
+    },
+    {
+        "id": "2a5d3bd420e73247",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "8364b0aa.ebd7e",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "ff55d734.a9cd28",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "e3bae96dea7fb9fe",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "37d0b55d9339a9b776301b6aefaef2dfd54d2273597781ff3ff7d9cf6fb0d54b-certificate.pem.crt",
+        "keyname": "37d0b55d9339a9b776301b6aefaef2dfd54d2273597781ff3ff7d9cf6fb0d54b-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
