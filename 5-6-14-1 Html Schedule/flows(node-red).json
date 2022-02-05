@@ -1,0 +1,755 @@
+[
+    {
+        "id": "d297502133d3031c",
+        "type": "tab",
+        "label": "플로우 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3afb3e6d0a82e6ed",
+        "type": "http in",
+        "z": "d297502133d3031c",
+        "name": "",
+        "url": "/test",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 160,
+        "wires": [
+            [
+                "631766aa4075b90d"
+            ]
+        ]
+    },
+    {
+        "id": "631766aa4075b90d",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "find.toArray",
+        "func": "global.set(\"msg_m\", msg);\nvar newMsg = {};\nnewMsg.collection = \"scheduler_queue\";\nnewMsg.operation = \"find.toArray\"\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 160,
+        "wires": [
+            [
+                "274df68f952797b5"
+            ]
+        ]
+    },
+    {
+        "id": "e28cc725a8cec160",
+        "type": "template",
+        "z": "d297502133d3031c",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <style> {{{payload.style}}} </style>\n        <script> {{{payload.script}}} </script>\n</head>\n<body>\n   {{{payload.menu}}} \n</body>\n<h2>날짜 및 시간을 선택해 주세요.</h2>\n<p>완료된 작업은 자동으로 목록에서 제거됩니다.</p>\n<body>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css\">\n  <link rel=\"stylesheet\" href=\"/resources/demos/style.css\">\n  <script src=\"https://code.jquery.com/jquery-3.6.0.js\"></script>\n  <script src=\"https://code.jquery.com/ui/1.13.0/jquery-ui.js\"></script>\n  <script>\n  $( function() {\n    $( \"#datepicker\" ).datepicker();\n  } );\n  </script>\n</body>\n<form action=\"/schedules\" method=\"post\">\n            <input type='hidden' name='act' value='1'>\n            <div class=\"container\">\n              <p>가동 날짜: <input type=\"text\" id=\"datepicker\" name=\"date\" required></p>\n              <p>시작 시간: <input type=\"time\" id=\"startTime\" name=\"startTime\" required></p>\n              <p>종료 시간: <input type=\"time\" id=\"endTime\" name= \"endTime\" required></p>\n              <button class='button' type=\"submit\" style=\"width:auto;\">스케쥴 추가</button>\n            </div>\n</form>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  width: 100%;\n  border: 1px solid #ddd;\n}\n\nth, td {\n  text-align: left;\n  padding: 8px;\n}\n\ntr:nth-child(even){background-color: #f2f2f2}\n</style>\n<head>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n  width: 100%;\n  border: 1px solid #ddd;\n}\n\nth, td {\n  text-align: left;\n  padding: 8px;\n}\n\ntr:nth-child(even){background-color: #f2f2f2}\n</style>\n</head>\n<body>\n\n<h2>스케쥴 목록</h2>\n\n<div style=\"overflow-x:auto;\">\n{{{payload.lists}}}\n</div>\n\n</body>\n</html>",
+        "output": "str",
+        "x": 1080,
+        "y": 160,
+        "wires": [
+            [
+                "35a5b78a842f9703"
+            ]
+        ]
+    },
+    {
+        "id": "a6d6c8a85bc485c1",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "get global",
+        "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nmsg.payload.act=global.get(\"act\");\nsc = \"<table>\";\nsc+=\"<tr>    <th>번호</th>   <th>시간</th>    </tr>\";\nfor(var i=0; i<msg.payload.length; i++){\n    sc+=\"<tr>\";\n    sc+=\"<td>\"+String(i+1)+\"</td>\";\n    sc+=\"<th>\"+msg.payload[i].startTimeWithDate+\"~\"+msg.payload[i].endTimeWithDate+\"</th>\";\n    sc+=\"</tr>\";\n}\nsc+=\"</table>\";\nmsg.payload.lists = sc;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 160,
+        "wires": [
+            [
+                "e28cc725a8cec160"
+            ]
+        ]
+    },
+    {
+        "id": "274df68f952797b5",
+        "type": "mongodb2 in",
+        "z": "d297502133d3031c",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 550,
+        "y": 160,
+        "wires": [
+            [
+                "a0ae2726e0da97a2"
+            ]
+        ]
+    },
+    {
+        "id": "a0ae2726e0da97a2",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "msg 받음",
+        "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_m\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 140,
+        "wires": [
+            [
+                "a6d6c8a85bc485c1"
+            ]
+        ]
+    },
+    {
+        "id": "35a5b78a842f9703",
+        "type": "http response",
+        "z": "d297502133d3031c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1230,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "513e5dbbfcfeee68",
+        "type": "mongodb2 in",
+        "z": "d297502133d3031c",
+        "service": "_ext_",
+        "configNode": "8364b0aa.ebd7e",
+        "name": "스케쥴 추가",
+        "collection": "",
+        "operation": "",
+        "x": 790,
+        "y": 320,
+        "wires": [
+            [
+                "fd04505c70331986"
+            ]
+        ]
+    },
+    {
+        "id": "5a20d143d528d1df",
+        "type": "comment",
+        "z": "d297502133d3031c",
+        "name": "Schedule",
+        "info": "1: \n",
+        "x": 160,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "fe1850d9a9ea0af6",
+        "type": "http in",
+        "z": "d297502133d3031c",
+        "name": "",
+        "url": "/schedules",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "c1293f964d56b4c0"
+            ]
+        ]
+    },
+    {
+        "id": "c1293f964d56b4c0",
+        "type": "switch",
+        "z": "d297502133d3031c",
+        "name": "",
+        "property": "payload.act",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "7b44fcba821f762b"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ce23c121be844076",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "insert one",
+        "func": "var newMsg = {};\nnewMsg.collection = 'scheduler_queue';\nnewMsg.operation  = 'insert';\nnewMsg.payload = {\n    \"date\" : msg.date,\n    \"startTime\": msg.startTime,\n    \"endTime\" : msg.endTime,\n    \"activationTime\" : msg.activationTime,\n    \"startTimeWithDate\" : msg.startTimeWithDate,\n    \"endTimeWithDate\" : msg.endTimeWithDate\n};\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 320,
+        "wires": [
+            [
+                "513e5dbbfcfeee68"
+            ]
+        ]
+    },
+    {
+        "id": "7b44fcba821f762b",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "parseDate",
+        "func": "global.set(\"msg_in\", msg);\nvar date = msg.payload.date;\nvar startTime = msg.payload.startTime;\nvar endTime = msg.payload.endTime;\nvar m=\"\",d=\"\",y=\"\";\nvar sh= \"\", sm= \"\", eh= \"\", em= \"\";\nvar i = 0;\nwhile(date[i]!='/') m+=date[i++];\ni++;\nwhile(date[i]!='/') d+=date[i++];\ni++;\nfor(var j=i; j<date.length; j++) y+=date[j];\nmsg.activationTime = (new Date(y+\"-\"+m+\"-\"+d+\" \"+endTime+\":00\")- new Date(y+\"-\"+m+\"-\"+d+\" \"+startTime+\":00\"))/1000;\nglobal.set(\"actime\", msg.activationTime);\nmsg.startTime = startTime;\nmsg.startTimeWithDate = y+\"-\"+m+\"-\"+d+\" \"+startTime+\":00\";\nmsg.endTimeWithDate = y+\"-\"+m+\"-\"+d+\" \"+endTime+\":00\";\nvar arr = [];\nconsole.log(arr.length);\nmsg.test1 = arr.length;\nif(global.get('array')==undefined){\n    arr.push([msg.startTimeWithDate, msg.endTimeWithDate]);\n    global.set('array', arr);\n}\nelse{\n    var tmparr = global.get('array');\n    tmparr.push([msg.startTimeWithDate, msg.endTimeWithDate]);\n    global.set('array', tmparr);\n}\nglobal.set('sttime', msg.startTimeWithDate);\nglobal.set('edtime', msg.endTimeWithDate);\nmsg.whatever = global.get('array');\nmsg.endTime = endTime;\nmsg.date = date;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 320,
+        "wires": [
+            [
+                "ce23c121be844076",
+                "e972d66f2d92cc29"
+            ]
+        ]
+    },
+    {
+        "id": "fd04505c70331986",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "msg 받음",
+        "func": "var msg=global.get(\"msg_in\")||\"\";\n//global.set('msg_refHTML', msg);\nmsg.act_arg = 4;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 320,
+        "wires": [
+            [
+                "c11596ac9f31ed66",
+                "4c04517101a328ec"
+            ]
+        ]
+    },
+    {
+        "id": "41b04ef4be87facc",
+        "type": "inject",
+        "z": "d297502133d3031c",
+        "name": "reset parameter to 0 (array)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 460,
+        "wires": [
+            [
+                "4cf0a40fa623270f"
+            ]
+        ]
+    },
+    {
+        "id": "4cf0a40fa623270f",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "",
+        "func": "global.set('array', undefined);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c11596ac9f31ed66",
+        "type": "ip",
+        "z": "d297502133d3031c",
+        "name": "node-red-contrib-ip",
+        "https": false,
+        "timeout": "5000",
+        "internalIPv4": true,
+        "internalIPv6": true,
+        "publicIPv4": true,
+        "publicIPv6": false,
+        "x": 1150,
+        "y": 280,
+        "wires": [
+            [
+                "0421427f8988fd5a"
+            ]
+        ]
+    },
+    {
+        "id": "0421427f8988fd5a",
+        "type": "template",
+        "z": "d297502133d3031c",
+        "name": "html",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n        <meta http-equiv='refresh' content='0; url=http://{{payload.publicIPv4}}:1880/test' method='get'> \n    </head>\n    <body>\n       </body>\n</html",
+        "output": "str",
+        "x": 1350,
+        "y": 320,
+        "wires": [
+            [
+                "22181a6b449d9121"
+            ]
+        ]
+    },
+    {
+        "id": "22181a6b449d9121",
+        "type": "http response",
+        "z": "d297502133d3031c",
+        "name": "refresh",
+        "statusCode": "",
+        "headers": {},
+        "x": 1560,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "169f633bd1c99893",
+        "type": "delay",
+        "z": "d297502133d3031c",
+        "name": "",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1380,
+        "y": 440,
+        "wires": [
+            [
+                "81b2edda34b4d921",
+                "f4a5f2071df50c99",
+                "7671bad6d216d732"
+            ]
+        ]
+    },
+    {
+        "id": "daf8edee8a87190c",
+        "type": "delay",
+        "z": "d297502133d3031c",
+        "name": "",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1700,
+        "y": 440,
+        "wires": [
+            [
+                "dd05bdc626bb23c6"
+            ]
+        ]
+    },
+    {
+        "id": "81b2edda34b4d921",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "delay time (off)",
+        "func": "msg.delay = global.get(\"actime\")*1000;\nmsg.mqttarg = 0;\ncnt = global.get('msg_cnt');\nglobal.set('msg_cnt', cnt-1);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1540,
+        "y": 440,
+        "wires": [
+            [
+                "daf8edee8a87190c"
+            ]
+        ]
+    },
+    {
+        "id": "4c04517101a328ec",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "delay time(on)",
+        "func": "const KR_TIME_DIFF = 9 * 60 * 60 * 1000;\nconst curr = new Date();\nconst utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);\nvar dif = new Date(global.get(\"sttime\"))- new Date(utc + KR_TIME_DIFF);\nmsg.delay = dif;\nmsg.mqttarg = 1; //json을 on으로 보낼지 off로 보낼지\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1220,
+        "y": 440,
+        "wires": [
+            [
+                "169f633bd1c99893",
+                "df5698bbdae70a57"
+            ]
+        ]
+    },
+    {
+        "id": "df5698bbdae70a57",
+        "type": "debug",
+        "z": "d297502133d3031c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "f4a5f2071df50c99",
+        "type": "debug",
+        "z": "d297502133d3031c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "delay",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "33503cb80119c2f8",
+        "type": "mqtt out",
+        "z": "d297502133d3031c",
+        "name": "",
+        "topic": "/jlee/inTopic",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "5c69db01ee974130",
+        "x": 2310,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "1ba4d686059587b8",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "to mqtt",
+        "func": "var newMsg = {};\nif(msg.mqttarg == 1){\n    newMsg.payload =\"{\\\"mac\\\":\\\"99391a4dffbc\\\",\\\"type\\\":12,\\\"outNo\\\":0,\\\"value\\\":1}\";\n}\nelse if(msg.mqttarg == 0){ \n    newMsg.payload =\"{\\\"mac\\\":\\\"99391a4dffbc\\\",\\\"type\\\":12,\\\"outNo\\\":0,\\\"value\\\":0}\";\n}\nnewMsg.del = msg.mqttarg;\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2030,
+        "y": 440,
+        "wires": [
+            [
+                "33503cb80119c2f8",
+                "e9ff795fc3eccc5e"
+            ]
+        ]
+    },
+    {
+        "id": "e9ff795fc3eccc5e",
+        "type": "switch",
+        "z": "d297502133d3031c",
+        "name": "schedule ends",
+        "property": "del",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2320,
+        "y": 400,
+        "wires": [
+            [
+                "b9f0298afd51d75f"
+            ]
+        ]
+    },
+    {
+        "id": "0a1fb8780d76aa2a",
+        "type": "comment",
+        "z": "d297502133d3031c",
+        "name": "스케쥴이 끝나면 목록에서 제거",
+        "info": "",
+        "x": 2030,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "6f6dcf2f15ad1a64",
+        "type": "mongodb2 in",
+        "z": "d297502133d3031c",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 2190,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c108662016270fb",
+        "type": "function",
+        "z": "d297502133d3031c",
+        "name": "findOneAndDelete",
+        "func": "var newMsg = {};\nvar arr = global.get('array');\nvar operations = arr.shift(); \nvar sttime = operations[0];\nvar edtime = operations[1];\nnewMsg.collection = \"scheduler_queue\";\nnewMsg.operation = \"findOneAndDelete\";\nnewMsg.payload = {\n    \"startTimeWithDate\":  sttime,\n    \"endTimeWithDate\" : edtime              \n};\nglobal.set('array', arr);\nnewMsg.test2 = global.get('array');\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1990,
+        "y": 540,
+        "wires": [
+            [
+                "6f6dcf2f15ad1a64",
+                "ee3c5ce32801d101"
+            ]
+        ]
+    },
+    {
+        "id": "ee3c5ce32801d101",
+        "type": "debug",
+        "z": "d297502133d3031c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2160,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "7671bad6d216d732",
+        "type": "link out",
+        "z": "d297502133d3031c",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "36d900af61176113"
+        ],
+        "x": 1465,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "dd05bdc626bb23c6",
+        "type": "link out",
+        "z": "d297502133d3031c",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "36d900af61176113"
+        ],
+        "x": 1815,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "36d900af61176113",
+        "type": "link in",
+        "z": "d297502133d3031c",
+        "name": "",
+        "links": [
+            "7671bad6d216d732",
+            "dd05bdc626bb23c6"
+        ],
+        "x": 1895,
+        "y": 440,
+        "wires": [
+            [
+                "1ba4d686059587b8"
+            ]
+        ]
+    },
+    {
+        "id": "b9f0298afd51d75f",
+        "type": "link out",
+        "z": "d297502133d3031c",
+        "name": "",
+        "mode": "link",
+        "links": [
+            "ea85feed3ac878d2"
+        ],
+        "x": 2475,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "ea85feed3ac878d2",
+        "type": "link in",
+        "z": "d297502133d3031c",
+        "name": "",
+        "links": [
+            "b9f0298afd51d75f"
+        ],
+        "x": 1835,
+        "y": 540,
+        "wires": [
+            [
+                "7c108662016270fb"
+            ]
+        ]
+    },
+    {
+        "id": "e972d66f2d92cc29",
+        "type": "debug",
+        "z": "d297502133d3031c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "ff55d734.a9cd28",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "8364b0aa.ebd7e",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "5c69db01ee974130",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a2qpy6ot038ohv-ats.iot.ap-northeast-2.amazonaws.com",
+        "port": "8883",
+        "tls": "e3bae96dea7fb9fe",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "e3bae96dea7fb9fe",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "37d0b55d9339a9b776301b6aefaef2dfd54d2273597781ff3ff7d9cf6fb0d54b-certificate.pem.crt",
+        "keyname": "37d0b55d9339a9b776301b6aefaef2dfd54d2273597781ff3ff7d9cf6fb0d54b-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
