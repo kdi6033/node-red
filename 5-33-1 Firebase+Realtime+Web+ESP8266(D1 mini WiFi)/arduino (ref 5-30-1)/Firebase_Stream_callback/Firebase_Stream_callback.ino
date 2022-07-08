@@ -1,5 +1,5 @@
 //FirebaseESP8266.h must be included before ESP8266WiFi.h
-#include "FirebaseESP8266.h"
+#include "FirebaseESP8266.h" //ver 2.9.0 으로 하세요
 #include <ESP8266WiFi.h>
 
 #define FIREBASE_HOST "02-b4a3b.firebaseio.com" //Without http:// or https:// schemes
