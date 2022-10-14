@@ -1,0 +1,48 @@
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://www.gstatic.com/firebasejs/7.2/firebase.js"></script>
+    </head>
+    <body>
+        파이어베이스 실시간으로 웹페이지 연동하기 </br>
+        Firebase + Realtime + Web 
+        <p id="demo">A Paragraph.</p>
+        <pre id="object"></pre>
+        <button type="button" onclick="myFunction('1')">전등켜기</button>
+        <button type="button" onclick="myFunction('0')">전등끄기</button>
+
+        <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyDAz-bN15cbZQtJhJQP6apblA8L9tsJNHs",
+                authDomain: "plc-fvdx.firebaseapp.com",
+                databaseURL: "https://plc-fvdx-default-rtdb.firebaseio.com",
+                projectId: "plc-fvdx",
+                storageBucket: "plc-fvdx.appspot.com",
+                messagingSenderId: "1020452163713",
+                appId: "1:1020452163713:web:7429fcf2bfa3aad49bfd80"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            // firebase에서 읽기
+            var demo = document.getElementById("demo");
+            var preObject = document.getElementById("object");
+            var dbRef = firebase.database().ref().child("data/on");
+            dbRef.on('value',snap => demo.innerHTML = snap.val());
+            dbRef.on('value',snap => {
+                preObject.innerText = JSON.stringify(snap.val(),null,3);
+            });
+        </script>
+
+        <script>
+            function myFunction(order) {
+                document.getElementById("demo").innerHTML = "쓰기를 완료";
+                //alert("쓰기 완료");
+                
+                //firebase에 쓰기
+                var dbRefObject = firebase.database().ref();
+                dbRefObject.child("data/on").set(order);
+            }
+        </script>
+    </body>
+</html>
