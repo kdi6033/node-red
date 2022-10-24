@@ -6,7 +6,7 @@
 #define FIREBASE_HOST "plc01-sehn-default-rtdb.firebaseio.com/" //Without http:// or https:// schemes
 #define FIREBASE_AUTH "MPHLmBZ0yHY8ubgP3aCqegxcMlj9uyebeT2bSngI"
 #define WIFI_SSID "i2r"
-#define WIFI_PASSWORD ""
+#define WIFI_PASSWORD "00000000"
 
 //Define FirebaseESP8266 data object
 FirebaseData firebaseData1;
@@ -23,6 +23,10 @@ int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장
 String inputString = "";         // 받은 문자열
 String sIn="",sInPre="";  // 입력값이 달라질 때만 mqtt로 송신
 
+unsigned long previousMillis = 0;     
+const long interval = 1000;  
+
+void doTick();
 void printResult(FirebaseData &data);
 void printResult(StreamData &data);
 void outResult(StreamData &data);
@@ -96,7 +100,18 @@ void setup()
 
 void loop()
 {
+  doTick();
   serialEvent();
+}
+
+//1초 마다 실행되는 시간함수
+void doTick() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+    crd16Rtu();
+  }  
 }
 
 void printResult(FirebaseData &data)
