@@ -3,10 +3,10 @@
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
 #include "CRC.h"
-#define FIREBASE_HOST "plc01-sehn-default-rtdb.firebaseio.com/" //Without http:// or https:// schemes
+#define FIREBASE_HOST "plc01-sehn-default-rtdb.firebaseio.com" //Without http:// or https:// schemes
 #define FIREBASE_AUTH "MPHLmBZ0yHY8ubgP3aCqegxcMlj9uyebeT2bSngI"
 #define WIFI_SSID "i2r"
-#define WIFI_PASSWORD "00000000"
+#define WIFI_PASSWORD ""
 
 //Define FirebaseESP8266 data object
 FirebaseData firebaseData1;
