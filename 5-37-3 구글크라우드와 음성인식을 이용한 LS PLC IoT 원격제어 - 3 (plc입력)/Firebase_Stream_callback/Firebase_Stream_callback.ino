@@ -6,7 +6,7 @@
 #define FIREBASE_HOST "plc01-sehn-default-rtdb.firebaseio.com" //Without http:// or https:// schemes
 #define FIREBASE_AUTH "MPHLmBZ0yHY8ubgP3aCqegxcMlj9uyebeT2bSngI"
 #define WIFI_SSID "i2r"
-#define WIFI_PASSWORD ""
+#define WIFI_PASSWORD "00000000"
 
 //Define FirebaseESP8266 data object
 FirebaseData firebaseData1;
@@ -301,18 +301,13 @@ void outResult(StreamData &data)
     noPlc=jsonObj.intValue;
   }
 
+  Serial.println("-------------");
   Serial.println(noPlc);
   Serial.println(onValue);
+  Serial.println("-------------");
   outPlc=1;
   Out[noPlc]=onValue;
   crd16Rtu();
-
-  if(onValue==1) {
-    Serial.println("Led Turned ON");                         
-  }
-  else {
-    Serial.println("Led Turned OFF");
-  }
 }
 
 // 아두이노에서 RS485 출력을 내보낸다.
