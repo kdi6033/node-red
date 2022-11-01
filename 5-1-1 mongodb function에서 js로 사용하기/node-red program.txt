@@ -1,0 +1,177 @@
+[
+    {
+        "id": "d94810bbe6ad0d6e",
+        "type": "function",
+        "z": "6807ec82773a08f7",
+        "name": "Create a database called \"mydb\"",
+        "func": "var mongo = global.get('mongodb_module');\nvar MongoClient = mongo.MongoClient;\nvar url = \"mongodb://localhost:27017/mydb\";\n\nMongoClient.connect(url, function (err, db) {\n    //if (err) throw err;\n    if (err) console.log(err);\n    console.log(\"Database created!\");\n    db.close();\n});\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "mongo",
+                "module": "mongodb"
+            }
+        ],
+        "x": 340,
+        "y": 40,
+        "wires": [
+            [
+                "80312a33c8b9a60c"
+            ]
+        ]
+    },
+    {
+        "id": "801ed2566f368260",
+        "type": "inject",
+        "z": "6807ec82773a08f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 40,
+        "wires": [
+            [
+                "d94810bbe6ad0d6e"
+            ]
+        ]
+    },
+    {
+        "id": "80312a33c8b9a60c",
+        "type": "debug",
+        "z": "6807ec82773a08f7",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "b66c3b2fd89f8621",
+        "type": "function",
+        "z": "6807ec82773a08f7",
+        "name": "Create a collection called \"customers\"",
+        "func": "//var mongo = global.get('mongodb_module');\nvar MongoClient = mongo.MongoClient;\nvar url = \"mongodb://localhost:27017/\";\n\nMongoClient.connect(url, function (err, db) {\n    if (err) throw err;\n    var dbo = db.db(\"mydb\");\n    dbo.createCollection(\"customers\", function (err, res) {\n        //if (err) throw err;\n        if (err) console.log(err);\n        else console.log(\"Collection created!\");\n        db.close();\n    });\n});\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "mongo",
+                "module": "mongodb"
+            }
+        ],
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "80312a33c8b9a60c"
+            ]
+        ]
+    },
+    {
+        "id": "f27d43c90da7e00e",
+        "type": "inject",
+        "z": "6807ec82773a08f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 100,
+        "wires": [
+            [
+                "b66c3b2fd89f8621"
+            ]
+        ]
+    },
+    {
+        "id": "c17521ca533c275c",
+        "type": "function",
+        "z": "6807ec82773a08f7",
+        "name": "Insert a document in the \"customers\" collection",
+        "func": "//var mongo = global.get('mongodb_module');\nvar MongoClient = mongo.MongoClient;\nvar url = \"mongodb://localhost:27017/\";\n\nMongoClient.connect(url, function (err, db) {\n    if (err) throw err;\n    var dbo = db.db(\"mydb\");\n    var myobj = { name: \"Company Inc\", address: \"Highway 37\" };\n    dbo.collection(\"customers\").insertOne(myobj, function (err, res) {\n        if (err) console.log(err);\n        else console.log(\"1 document inserted\");\n        db.close();\n    });\n});\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "mongo",
+                "module": "mongodb"
+            }
+        ],
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "80312a33c8b9a60c"
+            ]
+        ]
+    },
+    {
+        "id": "d487005006c9f875",
+        "type": "inject",
+        "z": "6807ec82773a08f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 160,
+        "wires": [
+            [
+                "c17521ca533c275c"
+            ]
+        ]
+    }
+]
