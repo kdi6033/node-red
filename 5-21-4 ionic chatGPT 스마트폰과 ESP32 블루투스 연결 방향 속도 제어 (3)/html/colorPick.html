@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>256 Color Picker</title>
+    <style>
+        .color-box {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            margin: 2px;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="colorContainer"></div>
+    <div>
+        선택한 색상의 RGB 값: <span id="rgbValue">없음</span>
+    </div>
+
+    <script>
+        // 256 색상을 생성하고 표시합니다.
+        const colors = generate256Colors();
+        const colorContainer = document.getElementById('colorContainer');
+
+        colors.forEach(color => {
+            const div = document.createElement('div');
+            div.className = 'color-box';
+            div.style.backgroundColor = color;
+            div.addEventListener('click', () => {
+                document.getElementById('rgbValue').innerText = getRgbValue(color);
+            });
+            colorContainer.appendChild(div);
+        });
+
+        function generate256Colors() {
+            let colors = [];
+            for (let r = 0; r < 8; r++) {
+                for (let g = 0; g < 8; g++) {
+                    for (let b = 0; b < 4; b++) {
+                        let red = Math.round(255 * (r / 7));
+                        let green = Math.round(255 * (g / 7));
+                        let blue = Math.round(255 * (b / 3));
+                        colors.push(`rgb(${red},${green},${blue})`);
+                    }
+                }
+            }
+            return colors;
+        }
+
+        function getRgbValue(color) {
+            const match = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+            if (match) {
+                return `R: ${match[1]}, G: ${match[2]}, B: ${match[3]}`;
+            }
+            return '없음';
+        }
+    </script>
+
+</body>
+
+</html>

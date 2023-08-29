@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주황색 볼 움직임</title>
+    <style>
+        #circle {
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            border-radius: 50%;
+            position: relative;
+            margin: 50px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        #ball {
+            width: 40px;
+            height: 40px;
+            background-color: #ff5900;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: black;
+        }
+
+        #center {
+            width: 5px;
+            height: 5px;
+            background-color: rgb(25, 10, 231);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="circle">
+    <div id="center"></div>
+    <div id="ball"></div>
+    <div id="info">
+        <p>반지름: <span id="radius">0</span></p>
+        <p>각도: <span id="angle">0</span>도</p>
+    </div>
+</div>
+
+<script>
+    const circle = document.getElementById('circle');
+    const ball = document.getElementById('ball');
+    const radiusDisplay = document.getElementById('radius');
+    const angleDisplay = document.getElementById('angle');
+    let isDragging = false;
+
+    circle.addEventListener('mousedown', function(event) {
+        const rect = ball.getBoundingClientRect();
+        if (event.clientX >= rect.left && event.clientX <= rect.right && 
+            event.clientY >= rect.top && event.clientY <= rect.bottom) {
+            isDragging = true;
+        }
+    });
+
+    circle.addEventListener('mouseup', function() {
+        isDragging = false;
+    });
+
+    circle.addEventListener('mousemove', function(event) {
+        if (!isDragging) return;
+
+        const rect = circle.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        const deltaX = mouseX - centerX;
+        const deltaY = mouseY - centerY;
+
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+        if (distance <= rect.width / 2) {
+            ball.style.left = `${mouseX - rect.left}px`;
+            ball.style.top = `${mouseY - rect.top}px`;
+
+            radiusDisplay.textContent = distance.toFixed(2);
+            angleDisplay.textContent = angle.toFixed(2);
+        }
+    });
+
+</script>
+
+</body>
+</html>

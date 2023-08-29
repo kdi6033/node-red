@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>원형 색상표</title>
+    <style>
+        #colorWheel {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <svg id="colorWheel" viewBox="0 0 400 400" width="400" height="400"></svg>
+    <div>
+        선택한 색상의 RGB 값: <span id="rgbValue">없음</span>
+    </div>
+
+    <script>
+        const colorWheel = document.getElementById('colorWheel');
+        const NUM_SEGMENTS = 256;
+        const RADIUS = 200;
+
+        for (let i = 0; i < NUM_SEGMENTS; i++) {
+            const angle = (i / NUM_SEGMENTS) * 2 * Math.PI;
+            const x1 = RADIUS + RADIUS * Math.sin(angle);
+            const y1 = RADIUS - RADIUS * Math.cos(angle);
+            const x2 = RADIUS + RADIUS * Math.sin(angle + 2 * Math.PI / NUM_SEGMENTS);
+            const y2 = RADIUS - RADIUS * Math.cos(angle + 2 * Math.PI / NUM_SEGMENTS);
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const d = `M${RADIUS},${RADIUS} L${x1},${y1} A${RADIUS},${RADIUS} 0 0,1 ${x2},${y2} Z`;
+
+            const hue = i / NUM_SEGMENTS * 360;
+            path.setAttribute('d', d);
+            path.setAttribute('fill', `hsl(${hue}, 100%, 50%)`);
+
+            path.addEventListener('click', () => {
+                const rgb = hslToRgb(hue / 360, 1, 0.5);
+                document.getElementById('rgbValue').innerText = `R: ${rgb[0]}, G: ${rgb[1]}, B: ${rgb[2]}`;
+            });
+
+            colorWheel.appendChild(path);
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hueToRgb(p, q, h + 1 / 3);
+                g = hueToRgb(p, q, h);
+                b = hueToRgb(p, q, h - 1 / 3);
+            }
+
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        function hueToRgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        }
+
+    </script>
+
+</body>
+
+</html>
+

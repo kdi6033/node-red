@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Slider with Line and Circular Pointer</title>
+    <style>
+        /* CSS code */
+        .circle-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+
+        .circle-slider {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .pointer-line {
+            width: 2px;
+            height: 50%;
+            background-color: transparent;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+        }
+
+        .circle-pointer {
+            width: 40px;       /* 이전 값의 두 배 */
+            height: 40px;     /* 이전 값의 두 배 */
+            background-color: green;
+            border-radius: 50%;
+            position: absolute;
+            transform-origin: center center;
+        }
+
+        .value-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle-container">
+        <div class="circle-slider">
+            <div class="pointer-line"></div>
+            <div class="circle-pointer"></div>
+        </div>
+        <div class="value-display">0°</div>
+    </div>
+    <script>
+        // JavaScript code
+        const container = document.querySelector('.circle-container');
+        const display = document.querySelector('.value-display');
+        const pointer = document.querySelector('.circle-pointer');
+        const pointerLine = document.querySelector('.pointer-line');
+
+        let isDragging = false;
+        let startAngle = 0;
+        let currentAngle = 270; // 물리적 위치는 270°에 있지만, 값은 0°로 취급
+
+        function getAngle(event) {
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const deltaX = event.clientX - centerX;
+            const deltaY = event.clientY - centerY;
+            let angle = (Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 360 - 180) % 360;
+            return (angle + 270) % 360; // 270°의 위치에서 각도 0°로 설정
+        }
+
+        function updatePointerPosition(angle) {
+            const radius = container.offsetWidth / 2;
+            const radian = angle * (Math.PI / 180);
+            const x = radius + (radius - 20) * Math.cos(radian);  // 20은 수정된 녹색 포인터의 반지름입니다.
+            const y = radius - (radius - 20) * Math.sin(radian);  // 20은 수정된 녹색 포인터의 반지름입니다.
+
+            pointer.style.left = `${x - pointer.offsetWidth / 2}px`;
+            pointer.style.bottom = `${y - pointer.offsetHeight / 2}px`;
+        }
+
+        // 페이지 로드 시 포인터와 지침의 초기 위치를 설정
+        updatePointerPosition(currentAngle);
+        pointerLine.style.transform = `rotate(${currentAngle}deg)`;
+
+        container.addEventListener('mousedown', function(event) {
+            isDragging = true;
+            startAngle = getAngle(event) - (currentAngle - 270);
+            event.preventDefault();
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        container.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                currentAngle = (getAngle(event) - startAngle + 360) % 360 + 270;
+                let displayAngle = Math.round(currentAngle - 270) % 360; 
+                display.textContent = `${displayAngle}°`;
+                
+                // 지침의 각도를 업데이트
+                pointerLine.style.transform = `rotate(${currentAngle}deg)`;
+                
+                // 녹색 포인터의 위치를 업데이트
+                updatePointerPosition(currentAngle);
+
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

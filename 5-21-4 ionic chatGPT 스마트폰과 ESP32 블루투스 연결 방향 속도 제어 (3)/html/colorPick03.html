@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 컬러 피커</title>
+</head>
+<body>
+    <h2>간단한 컬러 피커</h2>
+    <input type="color" id="colorPicker">
+    <p id="selectedColor">선택한 색상: #ffffff</p>
+
+    <script>
+        const colorPicker = document.getElementById('colorPicker');
+        const selectedColor = document.getElementById('selectedColor');
+
+        colorPicker.addEventListener('input', function() {
+            selectedColor.textContent = "선택한 색상: " + colorPicker.value;
+        });
+    </script>
+</body>
+</html>

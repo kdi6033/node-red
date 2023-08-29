@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      자동차 운전
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="flex-container">
+    <ion-button (click)="scanBluetoothDevices()">통신연결</ion-button>
+    <ion-button (click)="disconnectFromDevice()">통신끊기</ion-button>
+    <div class="led" [ngClass]="isConnected ? 'green' : 'red'"></div>
+  </div>
+
+  <!-- 추가된 코드 시작 -->
+  <div id="circle">
+    <div id="center"></div>
+    <div id="ball"></div>
+    <div id="info">
+        <p>반지름: <span id="radius">0</span></p>
+        <p>각도: <span id="angle">0</span>도</p>
+    </div>
+  </div>
+  <!-- 추가된 코드 끝 -->
+  <!-- 두 번째 슬라이더 -->
+  <div class="circle-container" id="second-slider">
+    <div class="circle-slider">
+        <div class="pointer-line"></div>
+        <div class="circle-pointer"></div>
+    </div>
+    <div class="value-display">0°</div>
+  </div>
+  
+  <ion-list>
+    <ion-item *ngFor="let device of devices" (click)="connectToDevice(device.deviceId)">
+      <ion-label>{{ device.name || 'Unknown Device' }}</ion-label>
+      <ion-note slot="end">{{ device.deviceId }}</ion-note>
+    </ion-item>
+  </ion-list>
+
+  <!-- 연결 실패 메시지 -->
+  <div *ngIf="showRetryMessage">
+    <p>블루투스 연결에 실패하였습니다. 다시한번 연결하세요.</p>
+    <button (click)="scanBluetoothDevices()">장치 다시 스캔</button>
+  </div>
+
+  <!--
+  <div id="container">
+    <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  </div>
+  -->
+</ion-content>
