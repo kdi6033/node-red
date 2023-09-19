@@ -33,6 +33,7 @@ firebase deploy
 https://us-central1-\<project-id\>.cloudfunctions.net/smarthome
 5. Google Home을 시작한다.
 
+### 아두이노 프로그램에서 Firebase Lib. 는 "Firebase ESP32 Client by Mobizt 4.3.19 를 사용하세요.
 
 Google Smart Home 문서 : 기기들 상세 프로그램을 하려면 참조하세요 https://developers.google.cn/assistant/smarthome/overview
 
